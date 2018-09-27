@@ -32,4 +32,18 @@ class Users
 
         return $this->guzzleClient->get(sprintf('users%s', $queryStringParams));
     }
+
+    public function getUserFollows(int $followerId = null, int $followeeId = null)
+    {
+        $queryStringParams = '';
+        if ($followerId) {
+            $queryStringParams .= sprintf('&from_id=%d', $followerId);
+        }
+        if ($followeeId) {
+            $queryStringParams .= sprintf('&to_id=%d', $followeeId);
+        }
+        $queryStringParams = $queryStringParams ? '?'.substr($queryStringParams, 1) : '';
+
+        return $this->guzzleClient->get(sprintf('users/follows%s', $queryStringParams));
+    }
 }

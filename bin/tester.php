@@ -9,23 +9,26 @@ require __DIR__ . '/../vendor/autoload.php';
 echo 'Twitch API Testing Tool'.PHP_EOL.PHP_EOL;
 
 if (!isset($argv[1])) {
-    echo 'Usage: php tester.php <client-id>';
+    echo sprintf('Usage: php %s <client-id>', $argv[0]);
     exit(1);
 }
 $guzzleClient = new HelixGuzzleClient($argv[1]);
 
-echo PHP_EOL;
-echo 'Which endpoint would you like to call?'.PHP_EOL;
-echo '1) GET USERS'.PHP_EOL;
-echo 'Choice: ';
-$choice = fgets(STDIN);
-switch ($choice) {
-    case 1:
-        getUsers($guzzleClient);
-        break;
-    default:
-        echo 'Bad choice.'.PHP_EOL;
-        exit(1);
+while (true) {
+    echo PHP_EOL;
+    echo 'Which endpoint would you like to call?'.PHP_EOL;
+    echo '1) GET USERS'.PHP_EOL;
+    echo '2) GET USER FOLLOWS'.PHP_EOL;
+    echo 'Choice: ';
+    $choice = fgets(STDIN);
+    switch ($choice) {
+        case 1:
+            getUsers($guzzleClient);
+            break;
+        case 2:
+            getUserFollows($guzzleClient);
+            break;
+    }
 }
 
 function getUsers(Client $guzzleClient)
@@ -43,6 +46,23 @@ function getUsers(Client $guzzleClient)
         array_filter(explode(',', $ids)),
         array_filter(explode(',', $usernames)),
         $includeEmail === 'y'
+    );
+
+    var_dump(json_decode((string) $response->getBody()));
+}
+
+function getUserFollows(Client $guzzleClient)
+{
+    echo 'GET USER FOLLOWS'.PHP_EOL;
+    echo 'Follower ID: ';
+    $followerId = (int) trim(fgets(STDIN));
+    echo 'Followee ID: ';
+    $followeeId = (int) trim(fgets(STDIN));
+
+    $usersApi = new Users($guzzleClient);
+    $response = $usersApi->getUserFollows(
+        $followerId,
+        $followeeId
     );
 
     var_dump(json_decode((string) $response->getBody()));

@@ -1,8 +1,8 @@
 <?php
 
-use TwitchApi\NewApi\CLI\CLIClient;
-
 require __DIR__ . '/../vendor/autoload.php';
+
+use TwitchApi\NewApi\CLI\CLIClient;
 
 try {
     (new CLIClient($argv))->run();

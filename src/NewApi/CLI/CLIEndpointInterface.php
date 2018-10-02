@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace TwitchApi\NewApi\CLI;
 
-use Psr\Http\Message\ResponseInterface;
+use TwitchApi\NewApi\RequestResponse;
 
 interface CLIEndpointInterface
 {
     public function getName(): string;
-    public function execute(): ResponseInterface;
+    public function execute(): RequestResponse;
 }

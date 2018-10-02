@@ -2,7 +2,7 @@
 
 namespace TwitchApi\NewApi\CLI;
 
-use Psr\Http\Message\ResponseInterface;
+use TwitchApi\NewApi\RequestResponse;
 use TwitchApi\NewApi\Users;
 
 class GetUsersCLIEndpoint extends CLIEndpoint
@@ -12,18 +12,18 @@ class GetUsersCLIEndpoint extends CLIEndpoint
         return 'GET USERS';
     }
 
-    public function execute(): ResponseInterface
+    public function execute(): RequestResponse
     {
         echo 'IDs (separated by commas): ';
-        $ids = $this->readFromStdin();
+        $ids = $this->readCSVIntoArrayFromStdin();
         echo 'Usernames (separated by commas): ';
-        $usernames = $this->readFromStdin();
+        $usernames = $this->readCSVIntoArrayFromStdin();
         echo 'Include email address? (y/n) ';
         $includeEmail = $this->readFromStdin();
 
         return (new Users($this->guzzleClient))->getUsers(
-            array_filter(explode(',', $ids)),
-            array_filter(explode(',', $usernames)),
+            $ids,
+            $usernames,
             $includeEmail === 'y'
         );
     }

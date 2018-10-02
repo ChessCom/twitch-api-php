@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace TwitchApi\NewApi;
 
-use Psr\Http\Message\ResponseInterface;
-
 class Users extends EndpointsResource
 {
     /**
      * Convenience method for getting a single user with their Twitch ID
      * @see getUsers
      */
-    public function getUserById(int $id, bool $includeEmail = false): ResponseInterface
+    public function getUserById(int $id, bool $includeEmail = false): RequestResponse
     {
         return $this->getUsers([$id], [], $includeEmail);
     }
@@ -21,7 +19,7 @@ class Users extends EndpointsResource
      * Convenience method for getting a single user with their Twitch username
      * @see getUsers
      */
-    public function getUserByUsername(string $username, bool $includeEmail = false): ResponseInterface
+    public function getUserByUsername(string $username, bool $includeEmail = false): RequestResponse
     {
         return $this->getUsers([], [$username], $includeEmail);
     }
@@ -29,43 +27,41 @@ class Users extends EndpointsResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users Documentation for Get Users API
      */
-    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false): ResponseInterface
+    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false): RequestResponse
     {
-        $queryStringParams = '';
+        $queryParamsMap = [];
         foreach ($ids as $id) {
-            $queryStringParams .= sprintf('&id=%d', $id);
+            $queryParamsMap[] = ['key' => 'id', 'value' => $id];
         }
         foreach ($usernames as $username) {
-            $queryStringParams .= sprintf('&login=%s', $username);
+            $queryParamsMap[] = ['key' => 'login', 'value' => $username];
         }
         if ($includeEmail) {
-            $queryStringParams .= '&scope=user:read:email';
+            $queryParamsMap[] = ['key' => 'scope', 'value' => 'user:read:email'];
         }
-        $queryStringParams = $queryStringParams ? '?'.substr($queryStringParams, 1) : '';
 
-        return $this->guzzleClient->get(sprintf('users%s', $queryStringParams));
+        return $this->callAPI('users', $queryParamsMap);
     }
 
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows Documentation for Get Users Follows API
      */
-    public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): ResponseInterface
+    public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): RequestResponse
     {
-        $queryStringParams = '';
+        $queryParamsMap = [];
         if ($followerId) {
-            $queryStringParams .= sprintf('&from_id=%d', $followerId);
+            $queryParamsMap[] = ['key' => 'from_id', 'value' => $followerId];
         }
         if ($followedUserId) {
-            $queryStringParams .= sprintf('&to_id=%d', $followedUserId);
+            $queryParamsMap[] = ['key' => 'to_id', 'value' => $followedUserId];
         }
         if ($first) {
-            $queryStringParams .= sprintf('&first=%d', $first);
+            $queryParamsMap[] = ['key' => 'first', 'value' => $first];
         }
         if ($after) {
-            $queryStringParams .= sprintf('&after=%s', $after);
+            $queryParamsMap[] = ['key' => 'after', 'value' => $after];
         }
-        $queryStringParams = $queryStringParams ? '?'.substr($queryStringParams, 1) : '';
 
-        return $this->guzzleClient->get(sprintf('users/follows%s', $queryStringParams));
+        return $this->callAPI('users/follows', $queryParamsMap);
     }
 }

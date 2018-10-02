@@ -25,4 +25,9 @@ abstract class CLIEndpoint implements CLIEndpointInterface
     {
         return (int) $this->readFromStdin();
     }
+
+    protected function readCSVIntoArrayFromStdin(): array
+    {
+        return array_filter(explode(',', $this->readFromStdin()));
+    }
 }

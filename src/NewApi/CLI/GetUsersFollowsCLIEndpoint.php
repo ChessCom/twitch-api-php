@@ -2,7 +2,7 @@
 
 namespace TwitchApi\NewApi\CLI;
 
-use Psr\Http\Message\ResponseInterface;
+use TwitchApi\NewApi\RequestResponse;
 use TwitchApi\NewApi\Users;
 
 class GetUsersFollowsCLIEndpoint extends CLIEndpoint
@@ -12,15 +12,15 @@ class GetUsersFollowsCLIEndpoint extends CLIEndpoint
         return 'GET USERS FOLLOWS';
     }
 
-    public function execute(): ResponseInterface
+    public function execute(): RequestResponse
     {
         echo 'Follower ID: ';
         $followerId = $this->readIntFromStdin();
         echo 'Followed User ID: ';
         $followedUserId = $this->readIntFromStdin();
-        echo 'First entry for pagination: ';
+        echo 'Max results to return: ';
         $first = $this->readIntFromStdin();
-        echo 'Start pagination after cursor value: ';
+        echo 'Cursor value next page starts with: ';
         $after = $this->readFromStdin();
 
         return (new Users($this->guzzleClient))->getUsersFollows(

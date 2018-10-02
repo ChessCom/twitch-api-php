@@ -31,28 +31,44 @@ class CLIClient
     {
         echo 'Twitch API Testing Tool'.PHP_EOL.PHP_EOL;
 
-        /** @var ResponseInterface $response */
-        $response = null;
         while (true) {
-            echo PHP_EOL;
-            echo 'Which endpoint would you like to call?'.PHP_EOL;
-            echo '0) Exit'.PHP_EOL;
-            echo '1) GET USERS'.PHP_EOL;
-            echo '2) GET USERS FOLLOWS'.PHP_EOL;
-            echo 'Choice: ';
-            $choice = fgets(STDIN);
-            switch ($choice) {
-                case 0:
-                    exit();
-                case 1:
-                    $response = $this->getUsers();
-                    break;
-                case 2:
-                    $response = $this->getUsersFollows();
-                    break;
+            try {
+                $this->printResponse($this->runChoice($this->getChoice()));
+            } catch (InvalidArgumentException $e) {
+                echo $e->getMessage();
             }
-            echo PHP_EOL.json_encode(json_decode($response->getBody()), JSON_PRETTY_PRINT).PHP_EOL;
         }
+    }
+
+    private function getChoice(): string
+    {
+        echo PHP_EOL;
+        echo 'Which endpoint would you like to call? (Ctrl-c to exit)'.PHP_EOL;
+        echo '1) GET USERS'.PHP_EOL;
+        echo '2) GET USERS FOLLOWS'.PHP_EOL;
+        echo 'Choice: ';
+
+        return fgets(STDIN);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function runChoice(string $choice): ResponseInterface
+    {
+        switch ($choice) {
+            case 1:
+                return $this->getUsers();
+            case 2:
+                return $this->getUsersFollows();
+            default:
+                throw new InvalidArgumentException('Invalid choice.');
+        }
+    }
+
+    private function printResponse(ResponseInterface $response): void
+    {
+        echo PHP_EOL.json_encode(json_decode($response->getBody()), JSON_PRETTY_PRINT).PHP_EOL;
     }
 
     private function getUsers(): ResponseInterface

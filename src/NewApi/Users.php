@@ -16,6 +16,27 @@ class Users
         $this->guzzleClient = $guzzleClient;
     }
 
+    /**
+     * Convenience method for getting a single user with their Twitch ID
+     * @see getUsers
+     */
+    public function getUserById(int $id, bool $includeEmail = false): ResponseInterface
+    {
+        return $this->getUsers([$id], [], $includeEmail);
+    }
+
+    /**
+     * Convenience method for getting a single user with their Twitch username
+     * @see getUsers
+     */
+    public function getUserByUsername(string $username, bool $includeEmail = false): ResponseInterface
+    {
+        return $this->getUsers([], [$username], $includeEmail);
+    }
+
+    /**
+     * @link https://dev.twitch.tv/docs/api/reference/#get-users Documentation for Get Users API
+     */
     public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false): ResponseInterface
     {
         $queryStringParams = '';
@@ -33,6 +54,9 @@ class Users
         return $this->guzzleClient->get(sprintf('users%s', $queryStringParams));
     }
 
+    /**
+     * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows Documentation for Get Users Follows API
+     */
     public function getUsersFollows(int $followerId = null, int $followeeId = null)
     {
         $queryStringParams = '';

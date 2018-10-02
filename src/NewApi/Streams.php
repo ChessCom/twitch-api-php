@@ -6,19 +6,11 @@ namespace TwitchApi\NewApi;
 
 class Streams extends EndpointsResource
 {
-    /**
-     * Convenience method for getting a single user's stream info with their Twitch ID
-     * @see getStreams
-     */
     public function getStreamForUserId(int $userId): RequestResponse
     {
         return $this->getStreams([$userId]);
     }
 
-    /**
-     * Convenience method for getting a single user's stream info with their Twitch ID
-     * @see getStreams
-     */
     public function getStreamForUsername(string $username): RequestResponse
     {
         return $this->getStreams(null, [$username]);

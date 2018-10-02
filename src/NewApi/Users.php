@@ -6,19 +6,11 @@ namespace TwitchApi\NewApi;
 
 class Users extends EndpointsResource
 {
-    /**
-     * Convenience method for getting a single user with their Twitch ID
-     * @see getUsers
-     */
     public function getUserById(int $id, bool $includeEmail = false): RequestResponse
     {
         return $this->getUsers([$id], [], $includeEmail);
     }
 
-    /**
-     * Convenience method for getting a single user with their Twitch username
-     * @see getUsers
-     */
     public function getUserByUsername(string $username, bool $includeEmail = false): RequestResponse
     {
         return $this->getUsers([], [$username], $includeEmail);

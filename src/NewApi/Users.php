@@ -33,7 +33,7 @@ class Users
         return $this->guzzleClient->get(sprintf('users%s', $queryStringParams));
     }
 
-    public function getUserFollows(int $followerId = null, int $followeeId = null)
+    public function getUsersFollows(int $followerId = null, int $followeeId = null)
     {
         $queryStringParams = '';
         if ($followerId) {

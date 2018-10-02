@@ -18,7 +18,7 @@ while (true) {
     echo PHP_EOL;
     echo 'Which endpoint would you like to call?'.PHP_EOL;
     echo '1) GET USERS'.PHP_EOL;
-    echo '2) GET USER FOLLOWS'.PHP_EOL;
+    echo '2) GET USERS FOLLOWS'.PHP_EOL;
     echo 'Choice: ';
     $choice = fgets(STDIN);
     switch ($choice) {
@@ -26,7 +26,7 @@ while (true) {
             getUsers($guzzleClient);
             break;
         case 2:
-            getUserFollows($guzzleClient);
+            getUsersFollows($guzzleClient);
             break;
     }
 }
@@ -51,16 +51,16 @@ function getUsers(Client $guzzleClient)
     var_dump(json_decode((string) $response->getBody()));
 }
 
-function getUserFollows(Client $guzzleClient)
+function getUsersFollows(Client $guzzleClient)
 {
-    echo 'GET USER FOLLOWS'.PHP_EOL;
+    echo 'GET USERS FOLLOWS'.PHP_EOL;
     echo 'Follower ID: ';
     $followerId = (int) trim(fgets(STDIN));
     echo 'Followee ID: ';
     $followeeId = (int) trim(fgets(STDIN));
 
     $usersApi = new Users($guzzleClient);
-    $response = $usersApi->getUserFollows(
+    $response = $usersApi->getUsersFollows(
         $followerId,
         $followeeId
     );

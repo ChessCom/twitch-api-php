@@ -57,7 +57,7 @@ class Users
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows Documentation for Get Users Follows API
      */
-    public function getUsersFollows(int $followerId = null, int $followeeId = null)
+    public function getUsersFollows(int $followerId = null, int $followeeId = null): ResponseInterface
     {
         $queryStringParams = '';
         if ($followerId) {

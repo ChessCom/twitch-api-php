@@ -32,7 +32,6 @@ abstract class EndpointsResource
      * [['key' => 'param_key', 'value' => 42],['key' => 'other_key', 'value' => 'asdf']]
      * would result in
      * ?param_key=42&other_key=asdf
-     *
      */
     protected function generateQueryParams(array $queryParamsMap): string
     {

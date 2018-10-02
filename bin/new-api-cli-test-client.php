@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use TwitchApi\NewApi\HelixGuzzleClient;
 use TwitchApi\NewApi\Users;
 
@@ -14,24 +15,30 @@ if (!isset($argv[1])) {
 }
 $guzzleClient = new HelixGuzzleClient($argv[1]);
 
+/** @var ResponseInterface $response */
+$response = null;
 while (true) {
     echo PHP_EOL;
     echo 'Which endpoint would you like to call?'.PHP_EOL;
+    echo '0) Exit'.PHP_EOL;
     echo '1) GET USERS'.PHP_EOL;
     echo '2) GET USERS FOLLOWS'.PHP_EOL;
     echo 'Choice: ';
     $choice = fgets(STDIN);
     switch ($choice) {
+        case 0:
+            exit();
         case 1:
-            getUsers($guzzleClient);
+            $response = getUsers($guzzleClient);
             break;
         case 2:
-            getUsersFollows($guzzleClient);
+            $response = getUsersFollows($guzzleClient);
             break;
     }
+    echo PHP_EOL.json_encode(json_decode($response->getBody()), JSON_PRETTY_PRINT).PHP_EOL;
 }
 
-function getUsers(Client $guzzleClient)
+function getUsers(Client $guzzleClient): ResponseInterface
 {
     echo 'GET USERS'.PHP_EOL;
     echo 'IDs (separated by commas): ';
@@ -41,17 +48,14 @@ function getUsers(Client $guzzleClient)
     echo 'Include email address? (y/n) ';
     $includeEmail = trim(fgets(STDIN));
 
-    $usersApi = new Users($guzzleClient);
-    $response = $usersApi->getUsers(
+    return (new Users($guzzleClient))->getUsers(
         array_filter(explode(',', $ids)),
         array_filter(explode(',', $usernames)),
         $includeEmail === 'y'
     );
-
-    var_dump(json_decode((string) $response->getBody()));
 }
 
-function getUsersFollows(Client $guzzleClient)
+function getUsersFollows(Client $guzzleClient): ResponseInterface
 {
     echo 'GET USERS FOLLOWS'.PHP_EOL;
     echo 'Follower ID: ';
@@ -59,12 +63,9 @@ function getUsersFollows(Client $guzzleClient)
     echo 'Followee ID: ';
     $followeeId = (int) trim(fgets(STDIN));
 
-    $usersApi = new Users($guzzleClient);
-    $response = $usersApi->getUsersFollows(
+    return (new Users($guzzleClient))->getUsersFollows(
         $followerId,
         $followeeId
     );
-
-    var_dump(json_decode((string) $response->getBody()));
 }
 

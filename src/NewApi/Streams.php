@@ -16,6 +16,15 @@ class Streams extends EndpointsResource
     }
 
     /**
+     * Convenience method for getting a single user's stream info with their Twitch ID
+     * @see getStreams
+     */
+    public function getStreamForUsername(string $username): RequestResponse
+    {
+        return $this->getStreams(null, [$username]);
+    }
+
+    /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-streams Documentation for Get Streams API
      */
     public function getStreams(array $userIds = null, array $usernames = null, array $gameIds = null, array $communityIds = null, array $languages = null, string $first = null, string $before = null, string $after = null): RequestResponse

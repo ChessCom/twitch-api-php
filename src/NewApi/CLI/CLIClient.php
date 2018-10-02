@@ -4,16 +4,14 @@ declare(strict_types = 1);
 
 namespace TwitchApi\NewApi\CLI;
 
-use GuzzleHttp\Client;
+use Exception;
 use InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
 use TwitchApi\NewApi\HelixGuzzleClient;
-use TwitchApi\NewApi\Users;
 
 class CLIClient
 {
-    /** @var Client */
-    private $guzzleClient;
+    /** @var array */
+    private $endpoints;
 
     /**
      * @throws InvalidArgumentException
@@ -24,81 +22,47 @@ class CLIClient
             throw new InvalidArgumentException(sprintf('Usage: php %s <client-id>', $argv[0]));
         }
 
-        $this->guzzleClient = new HelixGuzzleClient($argv[1]);
+        $guzzleClient = new HelixGuzzleClient($argv[1]);
+        $this->endpoints = [
+            /*
+             *  Start indexing at 1 instead of 0, so that a null choice from the user (pressing return with no input)
+             *  doesn't execute an endpoint when `(int) null` becomes `0`.
+             */
+            1 => new GetUsersCLIEndpoint($guzzleClient),
+            new GetUsersFollowsCLIEndpoint($guzzleClient),
+        ];
     }
 
     public function run(): void
     {
-        echo 'Twitch API Testing Tool'.PHP_EOL.PHP_EOL;
+        echo 'Twitch API Testing Tool'.PHP_EOL;
 
         while (true) {
             try {
-                $this->printResponse($this->runChoice($this->getChoice()));
-            } catch (InvalidArgumentException $e) {
-                echo $e->getMessage();
+                $response = $this->promptForEndpoint()->execute();
+                echo PHP_EOL.json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT).PHP_EOL;
+            } catch (Exception $e) {
+                echo $e->getMessage().PHP_EOL;
             }
         }
     }
 
-    private function getChoice(): string
+    /** @throws InvalidArgumentException */
+    private function promptForEndpoint(): CLIEndpointInterface
     {
         echo PHP_EOL;
-        echo 'Which endpoint would you like to call? (Ctrl-c to exit)'.PHP_EOL;
-        echo '1) GET USERS'.PHP_EOL;
-        echo '2) GET USERS FOLLOWS'.PHP_EOL;
-        echo 'Choice: ';
-
-        return fgets(STDIN);
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function runChoice(string $choice): ResponseInterface
-    {
-        switch ($choice) {
-            case 1:
-                return $this->getUsers();
-            case 2:
-                return $this->getUsersFollows();
-            default:
-                throw new InvalidArgumentException('Invalid choice.');
+        echo 'Which endpoint would you like to call?'.PHP_EOL;
+        foreach ($this->endpoints as $key => $endpoint) {
+            echo sprintf('%d) %s'.PHP_EOL, $key, $endpoint->getName());
         }
-    }
+        echo 'Choice (Ctrl-c to exit): ';
+        $choice = (int) fgets(STDIN);
+        echo PHP_EOL;
 
-    private function printResponse(ResponseInterface $response): void
-    {
-        echo PHP_EOL.json_encode(json_decode($response->getBody()), JSON_PRETTY_PRINT).PHP_EOL;
-    }
+        if (!array_key_exists($choice, $this->endpoints)) {
+            throw new InvalidArgumentException('Invalid choice.');
+        }
 
-    private function getUsers(): ResponseInterface
-    {
-        echo 'GET USERS' . PHP_EOL;
-        echo 'IDs (separated by commas): ';
-        $ids = trim(fgets(STDIN));
-        echo 'Usernames (separated by commas): ';
-        $usernames = trim(fgets(STDIN));
-        echo 'Include email address? (y/n) ';
-        $includeEmail = trim(fgets(STDIN));
-
-        return (new Users($this->guzzleClient))->getUsers(
-            array_filter(explode(',', $ids)),
-            array_filter(explode(',', $usernames)),
-            $includeEmail === 'y'
-        );
-    }
-
-    private function getUsersFollows(): ResponseInterface
-    {
-        echo 'GET USERS FOLLOWS' . PHP_EOL;
-        echo 'Follower ID: ';
-        $followerId = (int)trim(fgets(STDIN));
-        echo 'Followee ID: ';
-        $followeeId = (int)trim(fgets(STDIN));
-
-        return (new Users($this->guzzleClient))->getUsersFollows(
-            $followerId,
-            $followeeId
-        );
+        return $this->endpoints[$choice];
     }
 }

@@ -15,9 +15,9 @@ class GetUsersFollowsCLIEndpoint extends CLIEndpoint
     public function execute(): ResponseInterface
     {
         echo 'Follower ID: ';
-        $followerId = (int)trim(fgets(STDIN));
+        $followerId = $this->readIntFromStdin();
         echo 'Followee ID: ';
-        $followeeId = (int)trim(fgets(STDIN));
+        $followeeId = $this->readIntFromStdin();
 
         return (new Users($this->guzzleClient))->getUsersFollows(
             $followerId,

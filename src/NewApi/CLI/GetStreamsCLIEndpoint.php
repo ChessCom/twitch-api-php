@@ -15,7 +15,7 @@ class GetStreamsCLIEndpoint extends CLIEndpoint
     public function execute(): ResponseInterface
     {
         echo 'User ID: ';
-        $userId = (int)trim(fgets(STDIN));
+        $userId = $this->readIntFromStdin();
 
         return (new Streams($this->guzzleClient))->getStreamForUserId(
             $userId

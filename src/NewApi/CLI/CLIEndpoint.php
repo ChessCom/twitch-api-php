@@ -15,4 +15,14 @@ abstract class CLIEndpoint implements CLIEndpointInterface
     {
         $this->guzzleClient = $guzzleClient;
     }
+
+    protected function readFromStdin(): string
+    {
+        return trim(fgets(STDIN));
+    }
+
+    protected function readIntFromStdin(): int
+    {
+        return (int) $this->readFromStdin();
+    }
 }

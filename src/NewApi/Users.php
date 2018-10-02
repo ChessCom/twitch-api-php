@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace TwitchApi\NewApi;
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
-class Users
+class Users extends EndpointsResource
 {
-    private $guzzleClient;
-
-    public function __construct(Client $guzzleClient)
-    {
-        $this->guzzleClient = $guzzleClient;
-    }
-
     /**
      * Convenience method for getting a single user with their Twitch ID
      * @see getUsers

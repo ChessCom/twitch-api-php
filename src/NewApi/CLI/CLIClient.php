@@ -30,6 +30,7 @@ class CLIClient
              */
             1 => new GetUsersCLIEndpoint($guzzleClient),
             new GetUsersFollowsCLIEndpoint($guzzleClient),
+            new GetStreamsCLIEndpoint($guzzleClient),
         ];
     }
 

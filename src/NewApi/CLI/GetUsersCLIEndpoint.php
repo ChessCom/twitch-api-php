@@ -9,7 +9,7 @@ class GetUsersCLIEndpoint extends CLIEndpoint
 {
     public function getName(): string
     {
-        return 'GET USERS';
+        return 'Get Users';
     }
 
     public function execute(): RequestResponse

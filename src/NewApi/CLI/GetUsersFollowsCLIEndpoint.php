@@ -9,7 +9,7 @@ class GetUsersFollowsCLIEndpoint extends CLIEndpoint
 {
     public function getName(): string
     {
-        return 'GET USERS FOLLOWS';
+        return 'Get Users Follows';
     }
 
     public function execute(): RequestResponse

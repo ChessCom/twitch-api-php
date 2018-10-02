@@ -9,7 +9,7 @@ class GetStreamsCLIEndpoint extends CLIEndpoint
 {
     public function getName(): string
     {
-        return 'GET STREAMS';
+        return 'Get Streams';
     }
 
     public function execute(): RequestResponse

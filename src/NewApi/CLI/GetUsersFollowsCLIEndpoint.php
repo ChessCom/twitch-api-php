@@ -18,10 +18,16 @@ class GetUsersFollowsCLIEndpoint extends CLIEndpoint
         $followerId = $this->readIntFromStdin();
         echo 'Followee ID: ';
         $followeeId = $this->readIntFromStdin();
+        echo 'First entry for pagination: ';
+        $first = $this->readIntFromStdin();
+        echo 'Start pagination after cursor value: ';
+        $after = $this->readFromStdin();
 
         return (new Users($this->guzzleClient))->getUsersFollows(
             $followerId,
-            $followeeId
+            $followeeId,
+            $first,
+            $after
         );
     }
 }

@@ -14,7 +14,6 @@ class GetUsersFollowsCLIEndpoint extends CLIEndpoint
 
     public function execute(): ResponseInterface
     {
-        echo 'GET USERS FOLLOWS' . PHP_EOL;
         echo 'Follower ID: ';
         $followerId = (int)trim(fgets(STDIN));
         echo 'Followee ID: ';

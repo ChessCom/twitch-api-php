@@ -39,7 +39,9 @@ class CLIClient
 
         while (true) {
             try {
-                $response = $this->promptForEndpoint()->execute();
+                $endpoint = $this->promptForEndpoint();
+                echo $endpoint->getName().PHP_EOL;
+                $response = $endpoint->execute();
                 echo PHP_EOL.json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT).PHP_EOL;
             } catch (Exception $e) {
                 echo $e->getMessage().PHP_EOL;

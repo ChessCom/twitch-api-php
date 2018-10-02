@@ -14,7 +14,6 @@ class GetUsersCLIEndpoint extends CLIEndpoint
 
     public function execute(): ResponseInterface
     {
-        echo 'GET USERS' . PHP_EOL;
         echo 'IDs (separated by commas): ';
         $ids = trim(fgets(STDIN));
         echo 'Usernames (separated by commas): ';

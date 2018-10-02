@@ -49,14 +49,14 @@ class Users extends EndpointsResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows Documentation for Get Users Follows API
      */
-    public function getUsersFollows(int $followerId = null, int $followeeId = null, int $first = null, string $after = null): ResponseInterface
+    public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): ResponseInterface
     {
         $queryStringParams = '';
         if ($followerId) {
             $queryStringParams .= sprintf('&from_id=%d', $followerId);
         }
-        if ($followeeId) {
-            $queryStringParams .= sprintf('&to_id=%d', $followeeId);
+        if ($followedUserId) {
+            $queryStringParams .= sprintf('&to_id=%d', $followedUserId);
         }
         if ($first) {
             $queryStringParams .= sprintf('&first=%d', $first);

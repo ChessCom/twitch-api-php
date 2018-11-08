@@ -51,6 +51,18 @@ class UsersSpec extends ObjectBehavior
         $this->getUserByUsername('twitchuser')->shouldBeAnInstanceOf(RequestResponse::class);
     }
 
+    function it_should_get_users_and_include_email(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users?scope=user:read:email'))->willReturn($response);
+        $this->getUsers([], [], true)->shouldBeAnInstanceOf(RequestResponse::class);
+    }
+
+    function it_should_get_users_by_everything_including_email(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users?id=12345&id=98765&login=twitchuser&login=anotheruser&scope=user:read:email'))->willReturn($response);
+        $this->getUsers([12345,98765], ['twitchuser','anotheruser'], true)->shouldBeAnInstanceOf(RequestResponse::class);
+    }
+
     function it_should_get_users_follows_by_follower_id(Client $guzzleClient, Response $response)
     {
         $guzzleClient->send(new Request('GET', 'users/follows?from_id=12345'))->willReturn($response);
@@ -67,5 +79,23 @@ class UsersSpec extends ObjectBehavior
     {
         $guzzleClient->send(new Request('GET', 'users/follows?from_id=12345&to_id=98765'))->willReturn($response);
         $this->getUsersFollows(12345, 98765)->shouldBeAnInstanceOf(RequestResponse::class);
+    }
+
+    function it_should_get_users_follows_page_by_first(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users/follows?first=42'))->willReturn($response);
+        $this->getUsersFollows(null, null, 42)->shouldBeAnInstanceOf(RequestResponse::class);
+    }
+
+    function it_should_get_users_follows_page_by_after(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users/follows?after=42'))->willReturn($response);
+        $this->getUsersFollows(null, null, null, 42)->shouldBeAnInstanceOf(RequestResponse::class);
+    }
+
+    function it_should_get_users_follows_by_everything(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users/follows?from_id=12345&to_id=98765&first=42&after=99'))->willReturn($response);
+        $this->getUsersFollows(12345, 98765, 42, 99)->shouldBeAnInstanceOf(RequestResponse::class);
     }
 }

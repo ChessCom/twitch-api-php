@@ -15,13 +15,13 @@ class Streams extends AbstractResource
 
     public function getStreamForUsername(string $username): RequestResponse
     {
-        return $this->getStreams(null, [$username]);
+        return $this->getStreams([], [$username]);
     }
 
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-streams Documentation for Get Streams API
      */
-    public function getStreams(array $userIds = null, array $usernames = null, array $gameIds = null, array $communityIds = null, array $languages = null, string $first = null, string $before = null, string $after = null): RequestResponse
+    public function getStreams(array $userIds = [], array $usernames = [], array $gameIds = [], array $communityIds = [], array $languages = [], string $first = null, string $before = null, string $after = null): RequestResponse
     {
         $queryParamsMap = [];
         foreach ($userIds as $id) {

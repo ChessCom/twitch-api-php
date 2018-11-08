@@ -17,7 +17,8 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^4.0",
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "phpspec/phpspec": "^5.1",
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {

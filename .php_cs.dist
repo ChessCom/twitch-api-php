@@ -1,0 +1,9 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in('src/NewApi/')
+;
+
+return PhpCsFixer\Config::create()
+    ->setFinder($finder)
+;

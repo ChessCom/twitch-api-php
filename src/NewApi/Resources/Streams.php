@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi;
+namespace TwitchApi\NewApi\Resources;
 
-class Streams extends EndpointsResource
+use TwitchApi\NewApi\RequestResponse;
+
+class Streams extends AbstractResource
 {
     public function getStreamForUserId(int $userId): RequestResponse
     {

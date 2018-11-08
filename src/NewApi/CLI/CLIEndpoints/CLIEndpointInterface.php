@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\CLI;
+namespace TwitchApi\NewApi\CLI\CLIEndpoints;
 
 use TwitchApi\NewApi\RequestResponse;
 

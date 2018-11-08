@@ -6,6 +6,10 @@ namespace TwitchApi\NewApi\CLI;
 
 use Exception;
 use InvalidArgumentException;
+use TwitchApi\NewApi\CLI\CLIEndpoints\CLIEndpointInterface;
+use TwitchApi\NewApi\CLI\CLIEndpoints\GetStreamsCLIEndpoint;
+use TwitchApi\NewApi\CLI\CLIEndpoints\GetUsersCLIEndpoint;
+use TwitchApi\NewApi\CLI\CLIEndpoints\GetUsersFollowsCLIEndpoint;
 use TwitchApi\NewApi\HelixGuzzleClient;
 
 class CLIClient

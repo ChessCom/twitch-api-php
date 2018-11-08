@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi;
+namespace TwitchApi\NewApi\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use TwitchApi\NewApi\RequestResponse;
 
-abstract class EndpointsResource
+abstract class AbstractResource
 {
     protected $guzzleClient;
 

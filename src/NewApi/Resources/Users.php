@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi;
+namespace TwitchApi\NewApi\Resources;
 
-class Users extends EndpointsResource
+use TwitchApi\NewApi\RequestResponse;
+
+class Users extends AbstractResource
 {
     public function getUserById(int $id, bool $includeEmail = false): RequestResponse
     {

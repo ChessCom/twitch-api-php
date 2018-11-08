@@ -1,11 +1,11 @@
 <?php
 
-namespace TwitchApi\NewApi\CLI;
+namespace TwitchApi\NewApi\CLI\CLIEndpoints;
 
 use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Streams;
+use TwitchApi\NewApi\Resources\Streams;
 
-class GetStreamsCLIEndpoint extends CLIEndpoint
+class GetStreamsCLIEndpoint extends AbstractCLIEndpoint
 {
     public function getName(): string
     {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\CLI;
+namespace TwitchApi\NewApi\CLI\CLIEndpoints;
 
 use GuzzleHttp\Client;
 
-abstract class CLIEndpoint implements CLIEndpointInterface
+abstract class AbstractCLIEndpoint implements CLIEndpointInterface
 {
     /** @var Client */
     protected $guzzleClient;

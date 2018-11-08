@@ -1,11 +1,11 @@
 <?php
 
-namespace TwitchApi\NewApi\CLI;
+namespace TwitchApi\NewApi\CLI\CLIEndpoints;
 
 use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Users;
+use TwitchApi\NewApi\Resources\Users;
 
-class GetUsersFollowsCLIEndpoint extends CLIEndpoint
+class GetUsersFollowsCLIEndpoint extends AbstractCLIEndpoint
 {
     public function getName(): string
     {

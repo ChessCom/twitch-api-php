@@ -1,5 +1,5 @@
 {
-    "name": "echosa/twitch-api-php",
+    "name": "nicklaw5/twitch-api-php",
     "type": "library",
     "description": "A Twitch API client for PHP.",
     "keywords": ["twitch", "twitch.tv", "twitch-tv", "twitch-api", "api"],

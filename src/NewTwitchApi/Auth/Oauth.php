@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NewTwitchApi\Auth;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
 class Oauth
@@ -47,12 +48,14 @@ class Oauth
     public function getAccessToken($code, string $clientId, string $clientSecret, string $redirectUri, $state = null): ResponseInterface
     {
         return $this->guzzleClient->post('token', [
-            'client_id' => $clientId,
-            'client_secret' => $clientSecret,
-            'grant_type' => 'authorization_code',
-            'redirect_uri' => $redirectUri,
-            'code' => $code,
-            'state' => $state,
+            RequestOptions::JSON => [
+                'client_id' => $clientId,
+                'client_secret' => $clientSecret,
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => $redirectUri,
+                'code' => $code,
+                'state' => $state,
+            ]
         ]);
     }
 }

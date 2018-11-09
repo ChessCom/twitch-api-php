@@ -16,6 +16,11 @@ class Oauth
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
+    public function getFullAuthUrl(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): string
+    {
+        return $this->guzzleClient->getConfig('base_uri').$this->getAuthUrl($clientId, $redirectUri, $scope, $forceVerify, $state);
+    }
+
     public function getAuthUrl(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         $optionalParameters = '';

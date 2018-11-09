@@ -16,20 +16,25 @@ class Oauth
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
-    public function authorizeUser(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
+    public function getAuthUrl(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
     {
         $optionalParameters = '';
         $optionalParameters .= $forceVerify ? '&force_verify=true' : '';
         $optionalParameters .= $state ? sprintf('&state=%s', $state) : '';
 
-        $authUrl = sprintf(
+        return sprintf(
             'authorize?client_id=%s&redirect_uri=%s&response_type=token&scope=%s%s',
             $clientId,
             $redirectUri,
             $scope,
             $optionalParameters
         );
+    }
 
-        return $this->guzzleClient->get($authUrl);
+    public function authorizeUser(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
+    {
+        return $this->guzzleClient->get(
+            $this->getAuthUrl($clientId, $redirectUri, $scope, $forceVerify, $state)
+        );
     }
 }

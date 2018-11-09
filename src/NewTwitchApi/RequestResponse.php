@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi;
+namespace NewTwitchApi;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

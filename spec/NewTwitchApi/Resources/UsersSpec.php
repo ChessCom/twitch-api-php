@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\TwitchApi\NewApi\Resources;
+namespace spec\NewTwitchApi\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
-use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Resources\Users;
+use NewTwitchApi\RequestResponse;
+use NewTwitchApi\Resources\Users;
 
 class UsersSpec extends ObjectBehavior
 {

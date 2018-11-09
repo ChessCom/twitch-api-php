@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\Webhooks;
+namespace NewTwitchApi\Webhooks;
 
 use GuzzleHttp\Client;
-use TwitchApi\NewApi\HelixGuzzleClient;
+use NewTwitchApi\HelixGuzzleClient;
 
 class Webhook
 {

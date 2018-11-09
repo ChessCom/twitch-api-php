@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\Resources;
+namespace NewTwitchApi\Resources;
 
-use TwitchApi\NewApi\RequestResponse;
+use NewTwitchApi\RequestResponse;
 
 class Streams extends AbstractResource
 {

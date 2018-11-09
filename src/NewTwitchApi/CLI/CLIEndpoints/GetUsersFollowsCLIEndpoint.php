@@ -1,9 +1,9 @@
 <?php
 
-namespace TwitchApi\NewApi\CLI\CLIEndpoints;
+namespace NewTwitchApi\CLI\CLIEndpoints;
 
-use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Resources\Users;
+use NewTwitchApi\RequestResponse;
+use NewTwitchApi\Resources\Users;
 
 class GetUsersFollowsCLIEndpoint extends AbstractCLIEndpoint
 {

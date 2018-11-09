@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\CLI\CLIEndpoints;
+namespace NewTwitchApi\CLI\CLIEndpoints;
 
 use GuzzleHttp\Client;
 

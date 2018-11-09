@@ -1,9 +1,9 @@
 <?php
 
-namespace TwitchApi\NewApi\CLI\CLIEndpoints;
+namespace NewTwitchApi\CLI\CLIEndpoints;
 
-use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Resources\Streams;
+use NewTwitchApi\RequestResponse;
+use NewTwitchApi\Resources\Streams;
 
 class GetStreamsCLIEndpoint extends AbstractCLIEndpoint
 {

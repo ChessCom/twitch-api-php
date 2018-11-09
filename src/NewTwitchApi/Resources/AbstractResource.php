@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\Resources;
+namespace NewTwitchApi\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use TwitchApi\NewApi\RequestResponse;
+use NewTwitchApi\RequestResponse;
 
 abstract class AbstractResource
 {

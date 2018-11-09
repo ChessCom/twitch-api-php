@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace TwitchApi\NewApi\CLI;
+namespace NewTwitchApi\CLI;
 
 use Exception;
 use InvalidArgumentException;
-use TwitchApi\NewApi\CLI\CLIEndpoints\CLIEndpointInterface;
-use TwitchApi\NewApi\CLI\CLIEndpoints\GetStreamsCLIEndpoint;
-use TwitchApi\NewApi\CLI\CLIEndpoints\GetUsersCLIEndpoint;
-use TwitchApi\NewApi\CLI\CLIEndpoints\GetUsersFollowsCLIEndpoint;
-use TwitchApi\NewApi\HelixGuzzleClient;
+use NewTwitchApi\CLI\CLIEndpoints\CLIEndpointInterface;
+use NewTwitchApi\CLI\CLIEndpoints\GetStreamsCLIEndpoint;
+use NewTwitchApi\CLI\CLIEndpoints\GetUsersCLIEndpoint;
+use NewTwitchApi\CLI\CLIEndpoints\GetUsersFollowsCLIEndpoint;
+use NewTwitchApi\HelixGuzzleClient;
 
 class CLIClient
 {

@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in('src/NewApi/')
+    ->in('src/NewTwitchApi/')
 ;
 
 return PhpCsFixer\Config::create()

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\TwitchApi\NewApi\Resources;
+namespace spec\NewTwitchApi\Resources;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use NewTwitchApi\RequestResponse;
+use NewTwitchApi\Resources\Streams;
 use PhpSpec\ObjectBehavior;
-use TwitchApi\NewApi\RequestResponse;
-use TwitchApi\NewApi\Resources\Streams;
 
 class StreamsSpec extends ObjectBehavior
 {

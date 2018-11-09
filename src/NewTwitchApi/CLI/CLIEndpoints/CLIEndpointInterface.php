@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TwitchApi\NewApi\CLI\CLIEndpoints;
+namespace NewTwitchApi\CLI\CLIEndpoints;
 
-use TwitchApi\NewApi\RequestResponse;
+use NewTwitchApi\RequestResponse;
 
 interface CLIEndpointInterface
 {

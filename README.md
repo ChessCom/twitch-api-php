@@ -10,7 +10,49 @@ The New Twitch API client is still being developed and is currently incomplete. 
 
 In order to make testing the New Twitch API code easier, there is an interactive CLI script that can be run. This is found at `bin/new-api-cli-test-client.php`.
 
-To run it, execute it with `php bin/new-api-cli-test-client.php <client-id>`, passing in your client ID. The script will interactively walk you through the rest.
+To run it, execute it with `bin/new-api-cli-test-client.php <client-id>`, passing in your client ID. The script will interactively walk you through the rest.
+
+Here's a short example of the CLI test client in action.
+
+```bash
+$ ./bin/new-api-cli-test-client.php <CLIENT-ID>
+Twitch API Testing Tool
+
+Which endpoint would you like to call?
+1) Get Users
+2) Get Users Follows
+3) Get Streams
+Choice (Ctrl-c to exit): 1
+
+Get Users
+IDs (separated by commas):
+Usernames (separated by commas): echosa
+Include email address? (y/n)
+
+users?login=echosa
+
+{
+    "data": [
+        {
+            "id": "60048855",
+            "login": "echosa",
+            "display_name": "echosa",
+            "type": "",
+            "broadcaster_type": "affiliate",
+            "description": "Variety streamer. Single player games are best games. Schedule? What's a schedule? Kappa",
+            "profile_image_url": "https:\/\/static-cdn.jtvnw.net\/jtv_user_pictures\/echosa-profile_image-220987d139410547-300x300.png",
+            "offline_image_url": "https:\/\/static-cdn.jtvnw.net\/jtv_user_pictures\/echosa-channel_offline_image-f9d483b420e21c7d-1920x1080.png",
+            "view_count": 2362
+        }
+    ]
+}
+
+Which endpoint would you like to call?
+1) Get Users
+2) Get Users Follows
+3) Get Streams
+Choice (Ctrl-c to exit): ^C
+```
 
 ## Examples
 

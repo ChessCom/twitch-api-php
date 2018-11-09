@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace NewTwitchApi\CLI;
+namespace NewTwitchApi\Cli;
 
 use Exception;
 use InvalidArgumentException;
-use NewTwitchApi\CLI\CLIEndpoints\CLIEndpointInterface;
-use NewTwitchApi\CLI\CLIEndpoints\GetStreamsCLIEndpoint;
-use NewTwitchApi\CLI\CLIEndpoints\GetUsersCLIEndpoint;
-use NewTwitchApi\CLI\CLIEndpoints\GetUsersFollowsCLIEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
+use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
 use NewTwitchApi\HelixGuzzleClient;
 
-class CLIClient
+class CliClient
 {
     /** @var array */
     private $endpoints;
@@ -32,9 +32,9 @@ class CLIClient
              *  Start indexing at 1 instead of 0, so that a null choice from the user (pressing return with no input)
              *  doesn't execute an endpoint when `(int) null` becomes `0`.
              */
-            1 => new GetUsersCLIEndpoint($guzzleClient),
-            new GetUsersFollowsCLIEndpoint($guzzleClient),
-            new GetStreamsCLIEndpoint($guzzleClient),
+            1 => new GetUsersCliEndpoint($guzzleClient),
+            new GetUsersFollowsCliEndpoint($guzzleClient),
+            new GetStreamsCliEndpoint($guzzleClient),
         ];
     }
 
@@ -56,7 +56,7 @@ class CLIClient
     }
 
     /** @throws InvalidArgumentException */
-    private function promptForEndpoint(): CLIEndpointInterface
+    private function promptForEndpoint(): CliEndpointInterface
     {
         echo PHP_EOL;
         echo 'Which endpoint would you like to call?'.PHP_EOL;

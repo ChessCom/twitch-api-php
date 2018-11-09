@@ -3,10 +3,10 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use NewTwitchApi\CLI\CLIClient;
+use NewTwitchApi\Cli\CliClient;
 
 try {
-    (new CLIClient($argv))->run();
+    (new CliClient($argv))->run();
 } catch (InvalidArgumentException $e) {
     echo $e->getMessage();
 }

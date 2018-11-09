@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NewTwitchApi\CLI\CLIEndpoints;
+namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\RequestResponse;
 
-interface CLIEndpointInterface
+interface CliEndpointInterface
 {
     public function getName(): string;
     public function execute(): RequestResponse;

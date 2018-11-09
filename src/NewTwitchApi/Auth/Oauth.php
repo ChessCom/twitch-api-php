@@ -16,7 +16,7 @@ class Oauth
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
-    public function getAuthUrl(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
+    public function getAuthUrl(string $clientId, string $redirectUri, string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         $optionalParameters = '';
         $optionalParameters .= $forceVerify ? '&force_verify=true' : '';

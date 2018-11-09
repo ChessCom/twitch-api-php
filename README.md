@@ -78,6 +78,7 @@ composer require nicklaw5/twitch-api-php
 or add the following dependency to your `composer.json` file and run `composer install`:
 
 ```json
+TODO Update version to 2.0 for NewTwitchApi introduction
 "nicklaw5/twitch-api-php": "~1.0"
 ```
 

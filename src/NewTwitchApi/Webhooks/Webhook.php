@@ -24,29 +24,13 @@ class Webhook
         $this->guzzleClient = $guzzleClient ?: new HelixGuzzleClient();
     }
 
-    public function getClientId(): string
-    {
-        return $this->clientId;
-    }
-
-    public function getSecret(): string
-    {
-        return $this->secret;
-    }
-
-    public function getLeaseSeconds(): int
-    {
-        return $this->leaseSeconds;
-    }
-
     public function subscribeToStream(int $twitchId, string $accessToken, string $callback): void
     {
-        $topic = sprintf('https://api.twitch.tv/helix/streams?user_id=%s', $twitchId);
-        $headers = [
-            'Authorization' => sprintf('Bearer %s', $accessToken),
-            'Client-ID' => $this->getClientId(),
-        ];
-        $this->subscribe($topic, $callback, $headers);
+        $this->subscribe(
+            sprintf('https://api.twitch.tv/helix/streams?user_id=%s', $twitchId),
+            $accessToken,
+            $callback
+        );
     }
 
     public function validateWebhookEventCallback(string $xHubSignature, string $content): bool
@@ -57,8 +41,13 @@ class Webhook
         return $expectedHash === $generatedHash;
     }
 
-    private function subscribe(string $topic, string $callback, array $headers = []): void
+    private function subscribe(string $topic, string $accessToken, string $callback): void
     {
+        $headers = [
+            'Authorization' => sprintf('Bearer %s', $accessToken),
+            'Client-ID' => $this->clientId,
+        ];
+
         $body = [
             'hub.callback' => $callback,
             'hub.mode' => self::SUBSCRIBE,

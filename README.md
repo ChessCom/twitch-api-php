@@ -57,7 +57,9 @@ Choice (Ctrl-c to exit): ^C
 ## Examples
 
 ```php
-// TODO
+// TODO Auth example
+// TODO Resource endpoint example
+// TODO Webhook example
 ```
 
 ## Requirements

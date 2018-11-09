@@ -17,7 +17,7 @@ abstract class AbstractResource
         $this->guzzleClient = $guzzleClient;
     }
 
-    protected function callAPI(string $uriEndpoint, array $queryParamsMap = []): RequestResponse
+    protected function callApi(string $uriEndpoint, array $queryParamsMap = []): RequestResponse
     {
         $request = new Request('GET', sprintf('%s%s', $uriEndpoint, $this->generateQueryParams($queryParamsMap)));
         $response = $this->guzzleClient->send($request);

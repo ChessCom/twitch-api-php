@@ -49,6 +49,6 @@ class Streams extends AbstractResource
             $queryParamsMap[] = ['key' => 'after', 'value' => $after];
         }
 
-        return $this->callAPI('streams', $queryParamsMap);
+        return $this->callApi('streams', $queryParamsMap);
     }
 }

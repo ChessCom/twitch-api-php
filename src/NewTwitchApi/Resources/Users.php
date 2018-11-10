@@ -8,6 +8,11 @@ use NewTwitchApi\RequestResponse;
 
 class Users extends AbstractResource
 {
+    public function getUserByAccessToken(string $accessToken, bool $includeEmail = false): RequestResponse
+    {
+        return $this->getUsers([], [], $includeEmail, $accessToken);
+    }
+
     public function getUserById(int $id, bool $includeEmail = false): RequestResponse
     {
         return $this->getUsers([$id], [], $includeEmail);
@@ -21,7 +26,7 @@ class Users extends AbstractResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users Documentation for Get Users API
      */
-    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false): RequestResponse
+    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false, string $bearer = null): RequestResponse
     {
         $queryParamsMap = [];
         foreach ($ids as $id) {
@@ -34,7 +39,7 @@ class Users extends AbstractResource
             $queryParamsMap[] = ['key' => 'scope', 'value' => 'user:read:email'];
         }
 
-        return $this->callApi('users', $queryParamsMap);
+        return $this->callApi('users', $queryParamsMap, $bearer);
     }
 
     /**

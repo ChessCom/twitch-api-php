@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NewTwitchApi\Auth;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
@@ -57,5 +58,26 @@ class Oauth
                 'state' => $state,
             ]
         ]);
+    }
+
+    public function refreshToken(string $refeshToken, string $clientId, string $clientSecret, string $scope = ''): ResponseInterface
+    {
+        $requestOptions = [
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refeshToken,
+        ];
+        if ($scope) {
+            $requestOptions['scope'] = $scope;
+        }
+
+        try {
+            return $this->guzzleClient->post('token', [
+                RequestOptions::JSON => $requestOptions
+            ]);
+        } catch (RequestException $e) {
+            return $e->getResponse();
+        }
     }
 }

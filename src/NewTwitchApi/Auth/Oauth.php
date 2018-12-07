@@ -80,4 +80,15 @@ class Oauth
             return $e->getResponse();
         }
     }
+
+    public function validateAccessToken(string $accessToken): bool
+    {
+        $response = $this->guzzleClient->get('validate', [
+            RequestOptions::HEADERS => [
+                'Authorization' => sprintf('OAuth %s', $accessToken)
+            ],
+        ]);
+
+        return $response->getStatusCode() === 200;
+    }
 }

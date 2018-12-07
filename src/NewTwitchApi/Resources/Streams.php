@@ -25,7 +25,7 @@ class Streams extends AbstractResource
     {
         $queryParamsMap = [];
         foreach ($userIds as $id) {
-            $queryParamsMap[] = ['key' => 'id', 'value' => $id];
+            $queryParamsMap[] = ['key' => 'user_id', 'value' => $id];
         }
         foreach ($usernames as $username) {
             $queryParamsMap[] = ['key' => 'user_login', 'value' => $username];

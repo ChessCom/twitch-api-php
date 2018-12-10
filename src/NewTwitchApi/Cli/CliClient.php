@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use NewTwitchApi\Auth\AuthGuzzleClient;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetGamesCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
@@ -43,6 +44,7 @@ class CliClient
             new GetUsersCliEndpoint($helixGuzzleClient),
             new GetUsersFollowsCliEndpoint($helixGuzzleClient),
             new GetStreamsCliEndpoint($helixGuzzleClient),
+            new GetGamesCliEndpoint($helixGuzzleClient),
         ];
     }
 

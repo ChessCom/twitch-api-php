@@ -23,7 +23,7 @@ class StreamsSpec extends ObjectBehavior
 
     function it_should_get_streams_by_ids(Client $guzzleClient, Response $response)
     {
-        $guzzleClient->send(new Request('GET', 'streams?id=12345&id=98765'))->willReturn($response);
+        $guzzleClient->send(new Request('GET', 'streams?user_id=12345&user_id=98765'))->willReturn($response);
         $this->getStreams([12345,98765])->shouldBeAnInstanceOf(RequestResponse::class);
     }
 
@@ -35,13 +35,13 @@ class StreamsSpec extends ObjectBehavior
 
     function it_should_get_streams_by_id_and_username(Client $guzzleClient, Response $response)
     {
-        $guzzleClient->send(new Request('GET', 'streams?id=12345&id=98765&user_login=twitchuser&user_login=anotheruser'))->willReturn($response);
+        $guzzleClient->send(new Request('GET', 'streams?user_id=12345&user_id=98765&user_login=twitchuser&user_login=anotheruser'))->willReturn($response);
         $this->getStreams([12345,98765], ['twitchuser','anotheruser'])->shouldBeAnInstanceOf(RequestResponse::class);
     }
 
     function it_should_get_a_single_user_by_id(Client $guzzleClient, Response $response)
     {
-        $guzzleClient->send(new Request('GET', 'streams?id=12345'))->willReturn($response);
+        $guzzleClient->send(new Request('GET', 'streams?user_id=12345'))->willReturn($response);
         $this->getStreamForUserId(12345)->shouldBeAnInstanceOf(RequestResponse::class);
     }
 
@@ -89,7 +89,7 @@ class StreamsSpec extends ObjectBehavior
 
     function it_should_get_streams_by_everything(Client $guzzleClient, Response $response)
     {
-        $guzzleClient->send(new Request('GET', 'streams?id=12&id=34&user_login=twitchuser&user_login=anotheruser&game_id=56&game_id=78&community_id=90&community_id=99&language=en&language=de&first=100&before=200&after=300'))->willReturn($response);
+        $guzzleClient->send(new Request('GET', 'streams?user_id=12&user_id=34&user_login=twitchuser&user_login=anotheruser&game_id=56&game_id=78&community_id=90&community_id=99&language=en&language=de&first=100&before=200&after=300'))->willReturn($response);
         $this->getStreams([12,34], ['twitchuser','anotheruser'], [56,78], [90,99], ['en','de'], 100, 200, 300)->shouldBeAnInstanceOf(RequestResponse::class);
     }
 }

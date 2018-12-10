@@ -6,11 +6,9 @@ namespace NewTwitchApi\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use NewTwitchApi\RequestResponse;
-use Psr\Http\Message\ResponseInterface;
 
 class Oauth
 {
@@ -44,25 +42,31 @@ class Oauth
         );
     }
 
-    public function authorizeUser(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
+    public function authorizeUser(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): RequestResponse
     {
-        return $this->guzzleClient->get(
+        $request = new Request(
+            'GET',
             $this->getAuthUrl($redirectUri, $scope, $responseType, $forceVerify, $state)
         );
+
+        return $this->makeRequest($request);
     }
 
-    public function getAccessToken($code, string $clientSecret, string $redirectUri, $state = null): ResponseInterface
+    public function getAccessToken($code, string $clientSecret, string $redirectUri, $state = null): RequestResponse
     {
-        return $this->guzzleClient->post('token', [
-            RequestOptions::JSON => [
-                'client_id' => $this->clientId,
-                'client_secret' => $clientSecret,
-                'grant_type' => 'authorization_code',
-                'redirect_uri' => $redirectUri,
-                'code' => $code,
-                'state' => $state,
+        return $this->makeRequest(
+            new Request('POST', 'token'),
+            [
+                RequestOptions::JSON => [
+                    'client_id' => $this->clientId,
+                    'client_secret' => $clientSecret,
+                    'grant_type' => 'authorization_code',
+                    'redirect_uri' => $redirectUri,
+                    'code' => $code,
+                    'state' => $state,
+                ]
             ]
-        ]);
+        );
     }
 
     public function refreshToken(string $refeshToken, string $clientSecret, string $scope = ''): RequestResponse
@@ -77,27 +81,25 @@ class Oauth
             $requestOptions['scope'] = $scope;
         }
 
-        $request = new Request(
-            'POST',
-            'token'
+        return $this->makeRequest(
+            new Request('POST', 'token'),
+            [
+                RequestOptions::JSON => $requestOptions
+            ]
         );
-
-        return $this->makeRequest($request, [
-            RequestOptions::JSON => $requestOptions
-        ]);
     }
 
     public function validateAccessToken(string $accessToken): RequestResponse
     {
-        $request = new Request(
-            'GET',
-        'validate',
-            [
-                'Authorization' => sprintf('OAuth %s', $accessToken)
-            ]
+        return $this->makeRequest(
+            new Request(
+                'GET',
+                'validate',
+                [
+                    'Authorization' => sprintf('OAuth %s', $accessToken)
+                ]
+            )
         );
-
-        return $this->makeRequest($request);
     }
 
     public function isValidAccessToken(string $accessToken): bool

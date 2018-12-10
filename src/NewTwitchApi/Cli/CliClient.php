@@ -13,6 +13,7 @@ use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\ValidateTokenCliEndpoint;
 use NewTwitchApi\HelixGuzzleClient;
 
 class CliClient
@@ -37,6 +38,7 @@ class CliClient
         $helixGuzzleClient = new HelixGuzzleClient($this->clientId);
         $this->endpoints = [
             new ExitCliEndpoint(),
+            new ValidateTokenCliEndpoint($this->clientId),
             new RefreshTokenCliEndpoint($this->clientId, $this->clientSecret),
             new GetUsersCliEndpoint($helixGuzzleClient),
             new GetUsersFollowsCliEndpoint($helixGuzzleClient),
@@ -53,7 +55,7 @@ class CliClient
                 $endpoint = $this->promptForEndpoint();
                 echo $endpoint->getName().PHP_EOL;
                 $requestResponse = $endpoint->execute();
-                echo PHP_EOL.$requestResponse->getRequest()->getRequestTarget().PHP_EOL;
+                echo PHP_EOL.'/'.$requestResponse->getRequest()->getRequestTarget().PHP_EOL;
                 echo PHP_EOL.json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT).PHP_EOL;
             } catch (Exception $e) {
                 echo $e->getMessage().PHP_EOL;

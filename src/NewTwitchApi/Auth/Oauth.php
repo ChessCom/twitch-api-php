@@ -82,25 +82,37 @@ class Oauth
             'token'
         );
 
+        return $this->makeRequest($request, [
+            RequestOptions::JSON => $requestOptions
+        ]);
+    }
+
+    public function validateAccessToken(string $accessToken): RequestResponse
+    {
+        $request = new Request(
+            'GET',
+        'validate',
+            [
+                'Authorization' => sprintf('OAuth %s', $accessToken)
+            ]
+        );
+
+        return $this->makeRequest($request);
+    }
+
+    public function isValidAccessToken(string $accessToken): bool
+    {
+        return $this->validateAccessToken($accessToken)->getResponse()->getStatusCode() === 200;
+    }
+
+    private function makeRequest(Request $request, array $options = []): RequestResponse
+    {
         try {
-            $response = $this->guzzleClient->send($request, [
-                RequestOptions::JSON => $requestOptions
-            ]);
+            $response = $this->guzzleClient->send($request, $options);
         } catch (GuzzleException $e) {
             return new RequestResponse($e->getRequest(), $e->getResponse());
         }
 
         return new RequestResponse($request, $response);
-    }
-
-    public function validateAccessToken(string $accessToken): bool
-    {
-        $response = $this->guzzleClient->get('validate', [
-            RequestOptions::HEADERS => [
-                'Authorization' => sprintf('OAuth %s', $accessToken)
-            ],
-        ]);
-
-        return $response->getStatusCode() === 200;
     }
 }

@@ -7,6 +7,7 @@ namespace NewTwitchApi\Cli;
 use Exception;
 use InvalidArgumentException;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
+use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
@@ -28,11 +29,8 @@ class CliClient
 
         $guzzleClient = new HelixGuzzleClient($argv[1]);
         $this->endpoints = [
-            /*
-             *  Start indexing at 1 instead of 0, so that a null choice from the user (pressing return with no input)
-             *  doesn't execute an endpoint when `(int) null` becomes `0`.
-             */
-            1 => new GetUsersCliEndpoint($guzzleClient),
+            new ExitCliEndpoint(),
+            new GetUsersCliEndpoint($guzzleClient),
             new GetUsersFollowsCliEndpoint($guzzleClient),
             new GetStreamsCliEndpoint($guzzleClient),
         ];
@@ -63,7 +61,7 @@ class CliClient
         foreach ($this->endpoints as $key => $endpoint) {
             echo sprintf('%d) %s'.PHP_EOL, $key, $endpoint->getName());
         }
-        echo 'Choice (Ctrl-c to exit): ';
+        echo 'Choice: ';
         $choice = (int) fgets(STDIN);
         echo PHP_EOL;
 

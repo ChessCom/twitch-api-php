@@ -6,33 +6,41 @@ namespace NewTwitchApi\Cli;
 
 use Exception;
 use InvalidArgumentException;
+use NewTwitchApi\Auth\AuthGuzzleClient;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\HelixGuzzleClient;
 
 class CliClient
 {
     /** @var array */
     private $endpoints;
+    private $clientId;
+    private $clientSecret;
 
     /**
      * @throws InvalidArgumentException
      */
     public function __construct(array $argv)
     {
-        if (!isset($argv[1])) {
-            throw new InvalidArgumentException(sprintf('Usage: php %s <client-id>', $argv[0]));
+        if (!isset($argv[1], $argv[2])) {
+            throw new InvalidArgumentException(sprintf('Usage: php %s <client-id> <client-secret>', $argv[0]));
         }
 
-        $guzzleClient = new HelixGuzzleClient($argv[1]);
+        $this->clientId = $argv[1];
+        $this->clientSecret = $argv[2];
+
+        $helixGuzzleClient = new HelixGuzzleClient($this->clientId);
         $this->endpoints = [
             new ExitCliEndpoint(),
-            new GetUsersCliEndpoint($guzzleClient),
-            new GetUsersFollowsCliEndpoint($guzzleClient),
-            new GetStreamsCliEndpoint($guzzleClient),
+            new RefreshTokenCliEndpoint($this->clientId, $this->clientSecret),
+            new GetUsersCliEndpoint($helixGuzzleClient),
+            new GetUsersFollowsCliEndpoint($helixGuzzleClient),
+            new GetStreamsCliEndpoint($helixGuzzleClient),
         ];
     }
 

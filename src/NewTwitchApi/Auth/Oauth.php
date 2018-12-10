@@ -5,25 +5,30 @@ declare(strict_types=1);
 namespace NewTwitchApi\Auth;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
+use NewTwitchApi\RequestResponse;
 use Psr\Http\Message\ResponseInterface;
 
 class Oauth
 {
+    private $clientId;
     private $guzzleClient;
 
-    public function __construct(Client $guzzleClient = null)
+    public function __construct(string $clientId, Client $guzzleClient = null)
     {
+        $this->clientId = $clientId;
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
-    public function getFullAuthUrl(string $clientId, string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
+    public function getFullAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
-        return $this->guzzleClient->getConfig('base_uri').$this->getAuthUrl($clientId, $redirectUri, $responseType, $scope, $forceVerify, $state);
+        return $this->guzzleClient->getConfig('base_uri').$this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state);
     }
 
-    public function getAuthUrl(string $clientId, string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
+    public function getAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         $optionalParameters = '';
         $optionalParameters .= $forceVerify ? '&force_verify=true' : '';
@@ -31,7 +36,7 @@ class Oauth
 
         return sprintf(
             'authorize?client_id=%s&redirect_uri=%s&response_type=%s&scope=%s%s',
-            $clientId,
+            $this->clientId,
             $redirectUri,
             $responseType,
             $scope,
@@ -39,18 +44,18 @@ class Oauth
         );
     }
 
-    public function authorizeUser(string $clientId, string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
+    public function authorizeUser(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): ResponseInterface
     {
         return $this->guzzleClient->get(
-            $this->getAuthUrl($clientId, $redirectUri, $scope, $responseType, $forceVerify, $state)
+            $this->getAuthUrl($redirectUri, $scope, $responseType, $forceVerify, $state)
         );
     }
 
-    public function getAccessToken($code, string $clientId, string $clientSecret, string $redirectUri, $state = null): ResponseInterface
+    public function getAccessToken($code, string $clientSecret, string $redirectUri, $state = null): ResponseInterface
     {
         return $this->guzzleClient->post('token', [
             RequestOptions::JSON => [
-                'client_id' => $clientId,
+                'client_id' => $this->clientId,
                 'client_secret' => $clientSecret,
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => $redirectUri,
@@ -60,10 +65,10 @@ class Oauth
         ]);
     }
 
-    public function refreshToken(string $refeshToken, string $clientId, string $clientSecret, string $scope = ''): ResponseInterface
+    public function refreshToken(string $refeshToken, string $clientSecret, string $scope = ''): RequestResponse
     {
         $requestOptions = [
-            'client_id' => $clientId,
+            'client_id' => $this->clientId,
             'client_secret' => $clientSecret,
             'grant_type' => 'refresh_token',
             'refresh_token' => $refeshToken,
@@ -72,13 +77,20 @@ class Oauth
             $requestOptions['scope'] = $scope;
         }
 
+        $request = new Request(
+            'POST',
+            'token'
+        );
+
         try {
-            return $this->guzzleClient->post('token', [
+            $response = $this->guzzleClient->send($request, [
                 RequestOptions::JSON => $requestOptions
             ]);
-        } catch (RequestException $e) {
-            return $e->getResponse();
+        } catch (GuzzleException $e) {
+            return new RequestResponse($e->getRequest(), $e->getResponse());
         }
+
+        return new RequestResponse($request, $response);
     }
 
     public function validateAccessToken(string $accessToken): bool

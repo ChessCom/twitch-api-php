@@ -25,7 +25,11 @@ class OauthApi
 
     public function getFullAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
-        return $this->guzzleClient->getConfig('base_uri').$this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state);
+        return sprintf(
+            '%s%s',
+            $this->guzzleClient->getConfig('base_uri'),
+            $this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state)
+        );
     }
 
     public function getAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string

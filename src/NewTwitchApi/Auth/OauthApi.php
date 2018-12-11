@@ -23,6 +23,9 @@ class OauthApi
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
+    /**
+     * @return string A full authentication URL, including the Guzzle client's base URI.
+     */
     public function getFullAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         return sprintf(
@@ -32,6 +35,9 @@ class OauthApi
         );
     }
 
+    /**
+     * @return string A partial authentication URL, excluding the Guzzle client's base URI.
+     */
     public function getAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         $optionalParameters = '';

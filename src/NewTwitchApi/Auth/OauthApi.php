@@ -10,14 +10,16 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use NewTwitchApi\RequestResponse;
 
-class Oauth
+class OauthApi
 {
     private $clientId;
+    private $clientSecret;
     private $guzzleClient;
 
-    public function __construct(string $clientId, Client $guzzleClient = null)
+    public function __construct(string $clientId, string $clientSecret, Client $guzzleClient = null)
     {
         $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
         $this->guzzleClient = $guzzleClient ?? new AuthGuzzleClient();
     }
 
@@ -52,14 +54,14 @@ class Oauth
         return $this->makeRequest($request);
     }
 
-    public function getAccessToken($code, string $clientSecret, string $redirectUri, $state = null): RequestResponse
+    public function getAccessToken($code, string $redirectUri, $state = null): RequestResponse
     {
         return $this->makeRequest(
             new Request('POST', 'token'),
             [
                 RequestOptions::JSON => [
                     'client_id' => $this->clientId,
-                    'client_secret' => $clientSecret,
+                    'client_secret' => $this->clientSecret,
                     'grant_type' => 'authorization_code',
                     'redirect_uri' => $redirectUri,
                     'code' => $code,
@@ -69,11 +71,11 @@ class Oauth
         );
     }
 
-    public function refreshToken(string $refeshToken, string $clientSecret, string $scope = ''): RequestResponse
+    public function refreshToken(string $refeshToken, string $scope = ''): RequestResponse
     {
         $requestOptions = [
             'client_id' => $this->clientId,
-            'client_secret' => $clientSecret,
+            'client_secret' => $this->clientSecret,
             'grant_type' => 'refresh_token',
             'refresh_token' => $refeshToken,
         ];

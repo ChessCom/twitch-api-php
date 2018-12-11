@@ -3,7 +3,6 @@
 namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Streams;
 
 class GetStreamsCliEndpoint extends AbstractCliEndpoint
 {
@@ -31,7 +30,7 @@ class GetStreamsCliEndpoint extends AbstractCliEndpoint
         echo 'Cursor value next page starts with: ';
         $after = $this->readFromStdin();
 
-        return (new Streams($this->guzzleClient))->getStreams(
+        return $this->getTwitchApi()->getStreamsApi()->getStreams(
             $ids,
             $usernames,
             $games,

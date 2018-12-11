@@ -6,10 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Streams;
+use NewTwitchApi\Resources\StreamsApi;
 use PhpSpec\ObjectBehavior;
 
-class StreamsSpec extends ObjectBehavior
+class StreamsApiSpec extends ObjectBehavior
 {
     function let(Client $guzzleClient)
     {
@@ -18,7 +18,7 @@ class StreamsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Streams::class);
+        $this->shouldHaveType(StreamsApi::class);
     }
 
     function it_should_get_streams_by_ids(Client $guzzleClient, Response $response)

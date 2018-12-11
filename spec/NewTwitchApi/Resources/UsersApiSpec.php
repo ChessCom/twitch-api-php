@@ -7,9 +7,9 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Users;
+use NewTwitchApi\Resources\UsersApi;
 
-class UsersSpec extends ObjectBehavior
+class UsersApiSpec extends ObjectBehavior
 {
     function let(Client $guzzleClient)
     {
@@ -18,7 +18,7 @@ class UsersSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Users::class);
+        $this->shouldHaveType(UsersApi::class);
     }
 
     function it_should_get_users_by_ids(Client $guzzleClient, Response $response)

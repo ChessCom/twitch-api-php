@@ -21,7 +21,7 @@ class Webhook
         $this->clientId = $clientId;
         $this->secret = $secret;
         $this->leaseSeconds = $leaseSeconds;
-        $this->guzzleClient = $guzzleClient ?: new HelixGuzzleClient();
+        $this->guzzleClient = $guzzleClient ?: new HelixGuzzleClient($clientId);
     }
 
     public function subscribeToStream(int $twitchId, string $bearer, string $callback): void

@@ -4,7 +4,7 @@ namespace NewTwitchApi\Resources;
 
 use NewTwitchApi\RequestResponse;
 
-class Games extends AbstractResource
+class GamesApi extends AbstractResource
 {
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-games

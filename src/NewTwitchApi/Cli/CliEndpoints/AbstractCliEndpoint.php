@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use GuzzleHttp\Client;
+use NewTwitchApi\NewTwitchApi;
 
 abstract class AbstractCliEndpoint implements CliEndpointInterface
 {
-    /** @var Client */
-    protected $guzzleClient;
+    private $twitchApi;
 
-    public function __construct(Client $guzzleClient)
+    public function __construct(NewTwitchApi $twitchApi)
     {
-        $this->guzzleClient = $guzzleClient;
+        $this->twitchApi = $twitchApi;
+    }
+
+    public function getTwitchApi(): NewTwitchApi
+    {
+        return $this->twitchApi;
     }
 
     protected function readFromStdin(): string

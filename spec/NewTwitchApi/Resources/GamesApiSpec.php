@@ -6,10 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Games;
+use NewTwitchApi\Resources\GamesApi;
 use PhpSpec\ObjectBehavior;
 
-class GamesSpec extends ObjectBehavior
+class GamesApiSpec extends ObjectBehavior
 {
     function let(Client $guzzleClient)
     {
@@ -18,7 +18,7 @@ class GamesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Games::class);
+        $this->shouldHaveType(GamesApi::class);
     }
 
     function it_should_get_games_by_ids(Client $guzzleClient, Response $response)

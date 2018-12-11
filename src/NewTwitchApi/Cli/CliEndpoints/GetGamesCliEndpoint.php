@@ -3,7 +3,6 @@
 namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Games;
 
 class GetGamesCliEndpoint extends AbstractCliEndpoint
 {
@@ -19,6 +18,6 @@ class GetGamesCliEndpoint extends AbstractCliEndpoint
         echo 'Names (separated by commas): ';
         $names = $this->readCSVIntoArrayFromStdin();
 
-        return (new Games($this->guzzleClient))->getUsers($ids, $names);
+        return $this->getTwitchApi()->getUsersApi()->getUsers($ids, $names);
     }
 }

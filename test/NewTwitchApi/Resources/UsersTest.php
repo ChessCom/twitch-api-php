@@ -8,13 +8,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use NewTwitchApi\Resources\Users;
+use NewTwitchApi\Resources\UsersApi;
 
 class UsersTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetUserByIdShouldReturnSuccessfulResponseWithUserData(): void
     {
-        $users = new Users($this->getGuzzleClientWithMockUserResponse());
+        $users = new UsersApi($this->getGuzzleClientWithMockUserResponse());
         $requestResponse = $users->getUserById(44322889);
 
         $request = $requestResponse->getRequest();
@@ -29,7 +29,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     public function testGetUserByUsernameShouldReturnSuccessfulResponseWithUserData(): void
     {
 
-        $users = new Users($this->getGuzzleClientWithMockUserResponse());
+        $users = new UsersApi($this->getGuzzleClientWithMockUserResponse());
         $requestResponse = $users->getUserByUsername('dallas');
 
         $request = $requestResponse->getRequest();

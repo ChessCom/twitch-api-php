@@ -3,7 +3,6 @@
 namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Users;
 
 class GetUsersFollowsCliEndpoint extends AbstractCliEndpoint
 {
@@ -23,7 +22,7 @@ class GetUsersFollowsCliEndpoint extends AbstractCliEndpoint
         echo 'Cursor value next page starts with: ';
         $after = $this->readFromStdin();
 
-        return (new Users($this->guzzleClient))->getUsersFollows(
+        return $this->getTwitchApi()->getUsersApi()->getUsersFollows(
             $followerId,
             $followedUserId,
             $first,

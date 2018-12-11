@@ -6,7 +6,7 @@ namespace NewTwitchApi\Resources;
 
 use NewTwitchApi\RequestResponse;
 
-class Streams extends AbstractResource
+class StreamsApi extends AbstractResource
 {
     public function getStreamForUserId(int $userId): RequestResponse
     {

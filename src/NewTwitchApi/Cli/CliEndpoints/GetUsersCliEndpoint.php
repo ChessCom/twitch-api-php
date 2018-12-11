@@ -3,7 +3,6 @@
 namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\Users;
 
 class GetUsersCliEndpoint extends AbstractCliEndpoint
 {
@@ -21,7 +20,7 @@ class GetUsersCliEndpoint extends AbstractCliEndpoint
         echo 'Include email address? (y/n) ';
         $includeEmail = $this->readFromStdin();
 
-        return (new Users($this->guzzleClient))->getUsers(
+        return $this->getTwitchApi()->getUsersApi()->getUsers(
             $ids,
             $usernames,
             $includeEmail === 'y'

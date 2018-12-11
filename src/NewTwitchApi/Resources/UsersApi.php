@@ -6,7 +6,7 @@ namespace NewTwitchApi\Resources;
 
 use NewTwitchApi\RequestResponse;
 
-class Users extends AbstractResource
+class UsersApi extends AbstractResource
 {
     public function getUserByAccessToken(string $accessToken, bool $includeEmail = false): RequestResponse
     {

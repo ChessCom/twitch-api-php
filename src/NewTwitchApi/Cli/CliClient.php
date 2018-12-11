@@ -6,7 +6,6 @@ namespace NewTwitchApi\Cli;
 
 use Exception;
 use InvalidArgumentException;
-use NewTwitchApi\Auth\AuthGuzzleClient;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetGamesCliEndpoint;
@@ -16,13 +15,12 @@ use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\ValidateTokenCliEndpoint;
 use NewTwitchApi\HelixGuzzleClient;
+use NewTwitchApi\NewTwitchApi;
 
 class CliClient
 {
     /** @var array */
     private $endpoints;
-    private $clientId;
-    private $clientSecret;
 
     /**
      * @throws InvalidArgumentException
@@ -33,18 +31,20 @@ class CliClient
             throw new InvalidArgumentException(sprintf('Usage: php %s <client-id> <client-secret>', $argv[0]));
         }
 
-        $this->clientId = $argv[1];
-        $this->clientSecret = $argv[2];
+        $clientId = $argv[1];
+        $clientSecret = $argv[2];
 
-        $helixGuzzleClient = new HelixGuzzleClient($this->clientId);
+        $helixGuzzleClient = new HelixGuzzleClient($clientId);
+        $newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret);
+
         $this->endpoints = [
             new ExitCliEndpoint(),
-            new ValidateTokenCliEndpoint($this->clientId),
-            new RefreshTokenCliEndpoint($this->clientId, $this->clientSecret),
-            new GetUsersCliEndpoint($helixGuzzleClient),
-            new GetUsersFollowsCliEndpoint($helixGuzzleClient),
-            new GetStreamsCliEndpoint($helixGuzzleClient),
-            new GetGamesCliEndpoint($helixGuzzleClient),
+            new ValidateTokenCliEndpoint($newTwitchApi),
+            new RefreshTokenCliEndpoint($newTwitchApi),
+            new GetGamesCliEndpoint($newTwitchApi),
+            new GetStreamsCliEndpoint($newTwitchApi),
+            new GetUsersCliEndpoint($newTwitchApi),
+            new GetUsersFollowsCliEndpoint($newTwitchApi),
         ];
     }
 
@@ -57,7 +57,7 @@ class CliClient
                 $endpoint = $this->promptForEndpoint();
                 echo $endpoint->getName().PHP_EOL;
                 $requestResponse = $endpoint->execute();
-                echo PHP_EOL.'/'.$requestResponse->getRequest()->getRequestTarget().PHP_EOL;
+                echo PHP_EOL.$requestResponse->getRequest()->getRequestTarget().PHP_EOL;
                 echo PHP_EOL.json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT).PHP_EOL;
             } catch (Exception $e) {
                 echo $e->getMessage().PHP_EOL;

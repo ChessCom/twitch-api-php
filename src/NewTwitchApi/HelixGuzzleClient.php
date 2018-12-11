@@ -15,7 +15,7 @@ class HelixGuzzleClient extends Client
         $config = array_merge($config, [
             'base_uri' => self::BASE_URI,
             'timeout' => 30,
-            'headers' => ['Client-ID' => $clientId],
+            'headers' => ['Client-ID' => $clientId, 'Content-Type' => 'application/json'],
         ]);
 
         parent::__construct($config);

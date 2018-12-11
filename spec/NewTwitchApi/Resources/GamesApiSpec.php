@@ -32,4 +32,10 @@ class GamesApiSpec extends ObjectBehavior
         $guzzleClient->send(new Request('GET', 'games?name=mario&name=sonic'))->willReturn($response);
         $this->getGames([], ['mario','sonic'])->shouldBeAnInstanceOf(RequestResponse::class);
     }
+
+    function it_should_get_games_by_ids_and_names(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'games?id=12345&id=98765&name=mario&name=sonic'))->willReturn($response);
+        $this->getGames([12345,98765], ['mario','sonic'])->shouldBeAnInstanceOf(RequestResponse::class);
+    }
 }

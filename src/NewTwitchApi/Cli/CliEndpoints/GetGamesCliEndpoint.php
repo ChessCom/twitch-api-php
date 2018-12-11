@@ -18,6 +18,6 @@ class GetGamesCliEndpoint extends AbstractCliEndpoint
         echo 'Names (separated by commas): ';
         $names = $this->readCSVIntoArrayFromStdin();
 
-        return $this->getTwitchApi()->getUsersApi()->getUsers($ids, $names);
+        return $this->getTwitchApi()->getGamesApi()->getGames($ids, $names);
     }
 }

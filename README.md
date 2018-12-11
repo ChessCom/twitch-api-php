@@ -4,63 +4,7 @@
 
 A New Twitch API (Helix) client for PHP. The code for the new API is all contained within `src/NewApi/`. This is because the New API code is meant to be separate from the old Kraken API code, such that in the future, when Kraken is no longer available, the old Kraken code can be removed without affecting the new API code. Additionally, keeping them separate allows for existing code using the Kraken part of this library to continue to function, untouched by the new code.
 
-The New Twitch API client is still being developed and is currently incomplete. If an endpoint you need is missing, incomplete, or not working correctly, please report it or fix it if you can and create a PR for it.
-
-### CLI Test Client
-
-In order to make testing the New Twitch API code easier, there is an interactive CLI script that can be run. This is found at `bin/new-api-cli-test-client.php`.
-
-To run it, execute it with `bin/new-api-cli-test-client.php <client-id>`, passing in your client ID. The script will interactively walk you through the rest.
-
-Here's a short example of the CLI test client in action.
-
-```bash
-$ ./bin/new-api-cli-test-client.php <CLIENT-ID>
-Twitch API Testing Tool
-
-Which endpoint would you like to call?
-1) Get Users
-2) Get Users Follows
-3) Get Streams
-Choice (Ctrl-c to exit): 1
-
-Get Users
-IDs (separated by commas):
-Usernames (separated by commas): echosa
-Include email address? (y/n)
-
-users?login=echosa
-
-{
-    "data": [
-        {
-            "id": "60048855",
-            "login": "echosa",
-            "display_name": "echosa",
-            "type": "",
-            "broadcaster_type": "affiliate",
-            "description": "Variety streamer. Single player games are best games. Schedule? What's a schedule? Kappa",
-            "profile_image_url": "https:\/\/static-cdn.jtvnw.net\/jtv_user_pictures\/echosa-profile_image-220987d139410547-300x300.png",
-            "offline_image_url": "https:\/\/static-cdn.jtvnw.net\/jtv_user_pictures\/echosa-channel_offline_image-f9d483b420e21c7d-1920x1080.png",
-            "view_count": 2362
-        }
-    ]
-}
-
-Which endpoint would you like to call?
-1) Get Users
-2) Get Users Follows
-3) Get Streams
-Choice (Ctrl-c to exit): ^C
-```
-
-## Examples
-
-```php
-// TODO Auth example
-// TODO Resource endpoint example
-// TODO Webhook example
-```
+The New Twitch API client is still being developed and is currently incomplete. The endpoints that are implemented are usable, but not all endpoints have been implemented yet. If an endpoint you need is missing, incomplete, or not working correctly, please report it or fix it if you can and create a PR for it.
 
 ## Requirements
 
@@ -75,11 +19,123 @@ composer require nicklaw5/twitch-api-php
 
 ```
 
-or add the following dependency to your `composer.json` file and run `composer install`:
+or add the following dependency to your `composer.json` file and run `composer update`:
 
 ```json
-TODO Update version to 2.0 for NewTwitchApi introduction
+// TODO Update version to 2.0 when NewTwitchApi is available
 "nicklaw5/twitch-api-php": "~1.0"
+```
+
+## Usage
+
+Everything stems from the `NewTwitchApi` class. However, if you want to individual instantiate `UsersApi`, `OauthApi`, etc. you are free to do so.
+
+The API calls generally return a custom `RequestResponse` object. This object holds both the Guzzle `Request` and `Response`, with corresponding getters.
+
+The indiviual API classes that can be called from `NewTwitchApi` correspond to the [New Twitch API documentation](https://dev.twitch.tv/docs/api/). `OauthApi` is for Oauth calls. `WebhooksApi` is for webhooks. The rest of the API classes are based on the resources listed [here](https://dev.twitch.tv/docs/api/reference/). The methods in the classes generally correspond to the endpoints for each resource. The naming convention was chosen to try and match the Twitch documentation. Each primary endpoint method (not convenience or helper methods) should have an `@link` annotation with a URL to that endpoint's specific documentation.
+
+## Examples
+
+Getting a user's information via their access token:
+
+```php
+// Assuming you already have the access token.
+$accessToken = 'the token';
+
+// The Guzzle client used can be the included `HelixGuzzleClient` class, for convenience. 
+// You can also use a mock, fake, or other double for testing, of course.
+$helixGuzzleClient = new HelixGuzzleClient();
+
+// Instantiate NewTwitchApi. Can be done in a service layer and injected as well.
+$newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret);
+
+// Make the API call. A RequestResponse object is returned.
+$requestResponse = $newTwitchApi->getUsersApi()->getUserByAccessToken($accessToken);
+
+// Get the Response
+$response = $requestResponse->getResponse();
+
+if ($response->getStatusCode() !== 200) {
+    // Handle error appropriately for your application
+}
+
+// Get and decode the actual content sent by Twitch.
+$responseContent = json_decode($response->getBody()->getContents());
+
+// Return the first (or only) user.
+return $responseContent->data[0];
+```
+
+### CLI Test Client
+
+In order to make testing the New Twitch API code easier, there is an interactive CLI script that can be run. This is found at `bin/new-api-cli-test-client.php`.
+
+To run it, execute `./bin/new-api-cli-test-client.php <client-id> <client-secret>`, passing in your client ID and secret, respectively. The script will interactively walk you through the rest. You'll be prompted for which API endpoint you'd like to call. Then, you'll be prompted for any parameters that are available for that call. After the API call is made, you're presented with the URI of the request followed by the body of the response.
+
+Here's an example of the CLI client in action, getting the game information for Minecraft and then validating an invalid access token.
+
+```bash
+$ ./bin/new-api-cli-test-client.php REDACTED_CLIENT_ID REDACTED_CLIENT_SECRET
+Twitch API Testing Tool
+
+Which endpoint would you like to call?
+0) Quit
+1) Validate an Access Token
+2) Refresh an Access Token
+3) Get Games
+4) Get Streams
+5) Get Users
+6) Get Users Follows
+Choice: 3
+
+Get Games
+IDs (separated by commas):
+Names (separated by commas): Minecraft
+
+games?name=Minecraft
+
+{
+    "data": [
+        {
+            "id": "27471",
+            "name": "Minecraft",
+            "box_art_url": "https:\/\/static-cdn.jtvnw.net\/ttv-boxart\/Minecraft-{width}x{height}.jpg"
+        }
+    ]
+}
+
+Which endpoint would you like to call?
+0) Quit
+1) Validate an Access Token
+2) Refresh an Access Token
+3) Get Games
+4) Get Streams
+5) Get Users
+6) Get Users Follows
+Choice: 1
+
+Validate an Access Token
+Access token: foobar
+
+/oauth2/validate
+
+{
+    "status": 401,
+    "message": "invalid access token"
+}
+
+Which endpoint would you like to call?
+0) Quit
+1) Validate an Access Token
+2) Refresh an Access Token
+3) Get Games
+4) Get Streams
+5) Get Users
+6) Get Users Follows
+Choice: 0
+
+Quit
+$
 ```
 
 ## Tests
@@ -88,7 +144,7 @@ TODO Update version to 2.0 for NewTwitchApi introduction
 All [PHPUnit](https://phpunit.de/) unit tests can be run with the following command:
 
 ```bash
-vendor/bin/phpunit # or simply "phpunit" if you have it installed globally
+vendor/bin/phpunit
 ```
 
 This will run tests for both the New API code as well as the existing Kraken API code.

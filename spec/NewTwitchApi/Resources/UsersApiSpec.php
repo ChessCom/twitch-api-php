@@ -98,4 +98,10 @@ class UsersApiSpec extends ObjectBehavior
         $guzzleClient->send(new Request('GET', 'users/follows?from_id=12345&to_id=98765&first=42&after=99'))->willReturn($response);
         $this->getUsersFollows(12345, 98765, 42, 99)->shouldBeAnInstanceOf(RequestResponse::class);
     }
+
+    function it_should_get_user_with_access_token(Client $guzzleClient, Response $response)
+    {
+        $guzzleClient->send(new Request('GET', 'users', ['Authorization' => 'Bearer access-token']))->willReturn($response);
+        $this->getUsers([], [], false, 'access-token')->shouldBeAnInstanceOf(RequestResponse::class);
+    }
 }

@@ -12,6 +12,7 @@ use NewTwitchApi\Cli\CliEndpoints\GetGamesCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetUserWithAccessTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\ValidateTokenCliEndpoint;
 use NewTwitchApi\Cli\Exceptions\ExitCliException;
@@ -52,6 +53,7 @@ class CliClient
             new GetGamesCliEndpoint($newTwitchApi, $inputOutput),
             new GetStreamsCliEndpoint($newTwitchApi, $inputOutput),
             new GetUsersCliEndpoint($newTwitchApi, $inputOutput),
+            new GetUserWithAccessTokenCliEndpoint($newTwitchApi, $inputOutput),
             new GetUsersFollowsCliEndpoint($newTwitchApi, $inputOutput),
         ];
     }

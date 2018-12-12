@@ -8,11 +8,13 @@ use Exception;
 use InvalidArgumentException;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetAppAccessTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetGamesCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetStreamsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUserWithAccessTokenCliEndpoint;
+use NewTwitchApi\Cli\CliEndpoints\GetWebhookSubscriptionsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\ValidateTokenCliEndpoint;
 use NewTwitchApi\Cli\Exceptions\ExitCliException;
@@ -50,11 +52,13 @@ class CliClient
             new ExitCliEndpoint(),
             new ValidateTokenCliEndpoint($newTwitchApi, $inputOutput),
             new RefreshTokenCliEndpoint($newTwitchApi, $inputOutput),
+            new GetAppAccessTokenCliEndpoint($newTwitchApi, $inputOutput),
             new GetGamesCliEndpoint($newTwitchApi, $inputOutput),
             new GetStreamsCliEndpoint($newTwitchApi, $inputOutput),
             new GetUsersCliEndpoint($newTwitchApi, $inputOutput),
             new GetUserWithAccessTokenCliEndpoint($newTwitchApi, $inputOutput),
             new GetUsersFollowsCliEndpoint($newTwitchApi, $inputOutput),
+            new GetWebhookSubscriptionsCliEndpoint($newTwitchApi, $inputOutput),
         ];
     }
 

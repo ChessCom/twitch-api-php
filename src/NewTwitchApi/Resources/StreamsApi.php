@@ -19,7 +19,7 @@ class StreamsApi extends AbstractResource
     }
 
     /**
-     * @link https://dev.twitch.tv/docs/api/reference/#get-streams Documentation for Get Streams API
+     * @link https://dev.twitch.tv/docs/api/reference/#get-streams
      */
     public function getStreams(array $userIds = [], array $usernames = [], array $gameIds = [], array $communityIds = [], array $languages = [], string $first = null, string $before = null, string $after = null): RequestResponse
     {

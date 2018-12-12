@@ -61,7 +61,7 @@ class OauthApiSpec extends ObjectBehavior
             'state' => null,
         ]])->willReturn($response);
 
-        $requestResponse = $this->getAccessToken('user-code-from-twitch', 'https://redirect.url');
+        $requestResponse = $this->getUserAccessToken('user-code-from-twitch', 'https://redirect.url');
         $requestResponse->getRequest()->getMethod()->shouldBe('POST');
         $requestResponse->getResponse()->shouldBe($response);
     }
@@ -128,5 +128,23 @@ class OauthApiSpec extends ObjectBehavior
         $guzzleClient->send($request, [])->willReturn($response);
 
         $this->isValidAccessToken('invalid-user-access-token')->shouldReturn(false);
+    }
+
+    function it_should_get_app_access_token(Client $guzzleClient, Response $response)
+    {
+        $request = new Request(
+            'POST',
+            'token'
+        );
+        $guzzleClient->send($request, ['json' => [
+            'client_id' => 'client-id',
+            'client_secret' => 'client-secret',
+            'grant_type' => 'client_credentials',
+            'scope' => '',
+        ]])->willReturn($response);
+
+        $requestResponse = $this->getAppAccessToken();
+        $requestResponse->getRequest()->getMethod()->shouldBe('POST');
+        $requestResponse->getResponse()->shouldBe($response);
     }
 }

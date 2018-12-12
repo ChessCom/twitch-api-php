@@ -64,7 +64,7 @@ class OauthApi
         return $this->makeRequest($request);
     }
 
-    public function getAccessToken($code, string $redirectUri, $state = null): RequestResponse
+    public function getUserAccessToken($code, string $redirectUri, $state = null): RequestResponse
     {
         return $this->makeRequest(
             new Request('POST', 'token'),
@@ -117,6 +117,21 @@ class OauthApi
     public function isValidAccessToken(string $accessToken): bool
     {
         return $this->validateAccessToken($accessToken)->getResponse()->getStatusCode() === 200;
+    }
+
+    public function getAppAccessToken(string $scope = ''): RequestResponse
+    {
+        return $this->makeRequest(
+            new Request('POST', 'token'),
+            [
+                RequestOptions::JSON => [
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'grant_type' => 'client_credentials',
+                    'scope' => $scope,
+                ]
+            ]
+        );
     }
 
     private function makeRequest(Request $request, array $options = []): RequestResponse

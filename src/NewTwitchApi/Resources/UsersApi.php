@@ -24,7 +24,7 @@ class UsersApi extends AbstractResource
     }
 
     /**
-     * @link https://dev.twitch.tv/docs/api/reference/#get-users Documentation for Get Users API
+     * @link https://dev.twitch.tv/docs/api/reference/#get-users
      */
     public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false, string $bearer = null): RequestResponse
     {
@@ -43,7 +43,7 @@ class UsersApi extends AbstractResource
     }
 
     /**
-     * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows Documentation for Get Users Follows API
+     * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows
      */
     public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): RequestResponse
     {

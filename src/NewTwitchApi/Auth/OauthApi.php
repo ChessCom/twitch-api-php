@@ -58,7 +58,7 @@ class OauthApi
     {
         $request = new Request(
             'GET',
-            $this->getAuthUrl($redirectUri, $scope, $responseType, $forceVerify, $state)
+            $this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state)
         );
 
         return $this->makeRequest($request);

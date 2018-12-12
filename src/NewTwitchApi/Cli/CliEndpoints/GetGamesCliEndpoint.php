@@ -13,10 +13,10 @@ class GetGamesCliEndpoint extends AbstractCliEndpoint
 
     public function execute(): RequestResponse
     {
-        echo 'IDs (separated by commas): ';
-        $ids = $this->readCSVIntoArrayFromStdin();
-        echo 'Names (separated by commas): ';
-        $names = $this->readCSVIntoArrayFromStdin();
+        $this->getOutputWriter()->write('IDs (separated by commas): ');
+        $ids = $this->getInputReader()->readCSVIntoArrayFromStdin();
+        $this->getOutputWriter()->write('Names (separated by commas): ');
+        $names = $this->getInputReader()->readCSVIntoArrayFromStdin();
 
         return $this->getTwitchApi()->getGamesApi()->getGames($ids, $names);
     }

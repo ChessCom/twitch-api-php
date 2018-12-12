@@ -13,8 +13,8 @@ class ValidateTokenCliEndpoint extends AbstractCliEndpoint
 
     public function execute(): RequestResponse
     {
-        echo 'Access token: ';
-        $accessToken = $this->readFromStdin();
+        $this->getOutputWriter()->write('Access token: ');
+        $accessToken = $this->getInputReader()->readFromStdin();
 
         return $this->getTwitchApi()->getOauthApi()->validateAccessToken($accessToken);
     }

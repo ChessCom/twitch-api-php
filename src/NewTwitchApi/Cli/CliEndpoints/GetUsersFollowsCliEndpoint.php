@@ -13,14 +13,14 @@ class GetUsersFollowsCliEndpoint extends AbstractCliEndpoint
 
     public function execute(): RequestResponse
     {
-        echo 'Follower ID: ';
-        $followerId = $this->readIntFromStdin();
-        echo 'Followed User ID: ';
-        $followedUserId = $this->readIntFromStdin();
-        echo 'Max results to return: ';
-        $first = $this->readIntFromStdin();
-        echo 'Cursor value next page starts with: ';
-        $after = $this->readFromStdin();
+        $this->getOutputWriter()->write('Follower ID: ');
+        $followerId = $this->getInputReader()->readIntFromStdin();
+        $this->getOutputWriter()->write('Followed User ID: ');
+        $followedUserId = $this->getInputReader()->readIntFromStdin();
+        $this->getOutputWriter()->write('Max results to return: ');
+        $first = $this->getInputReader()->readIntFromStdin();
+        $this->getOutputWriter()->write('Cursor value next page starts with: ');
+        $after = $this->getInputReader()->readFromStdin();
 
         return $this->getTwitchApi()->getUsersApi()->getUsersFollows(
             $followerId,

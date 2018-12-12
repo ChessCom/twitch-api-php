@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace NewTwitchApi\Cli\CliEndpoints;
 
+use NewTwitchApi\Cli\IO\InputOutput;
+use NewTwitchApi\Cli\IO\InputReader;
+use NewTwitchApi\Cli\IO\OutputWriter;
 use NewTwitchApi\NewTwitchApi;
 
 abstract class AbstractCliEndpoint implements CliEndpointInterface
 {
     private $twitchApi;
+    private $inputOutput;
 
-    public function __construct(NewTwitchApi $twitchApi)
+    public function __construct(NewTwitchApi $twitchApi, InputOutput $inputOutput)
     {
         $this->twitchApi = $twitchApi;
+        $this->inputOutput = $inputOutput;
     }
 
     public function getTwitchApi(): NewTwitchApi
@@ -20,18 +25,13 @@ abstract class AbstractCliEndpoint implements CliEndpointInterface
         return $this->twitchApi;
     }
 
-    protected function readFromStdin(): string
+    public function getInputReader(): InputReader
     {
-        return trim(fgets(STDIN));
+        return $this->inputOutput->getInputReader();
     }
 
-    protected function readIntFromStdin(): int
+    public function getOutputWriter(): OutputWriter
     {
-        return (int) $this->readFromStdin();
-    }
-
-    protected function readCSVIntoArrayFromStdin(): array
-    {
-        return array_filter(explode(',', $this->readFromStdin()));
+        return $this->inputOutput->getOutputWriter();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace NewTwitchApi\Cli\CliEndpoints;
 
+use NewTwitchApi\Cli\Exceptions\ExitCliException;
 use NewTwitchApi\RequestResponse;
 
 class ExitCliEndpoint extends AbstractCliEndpoint
@@ -16,8 +17,9 @@ class ExitCliEndpoint extends AbstractCliEndpoint
         return 'Quit';
     }
 
+    /** @throws ExitCliException */
     public function execute(): RequestResponse
     {
-        exit;
+        throw new ExitCliException('Exit from CLI client requested.');
     }
 }

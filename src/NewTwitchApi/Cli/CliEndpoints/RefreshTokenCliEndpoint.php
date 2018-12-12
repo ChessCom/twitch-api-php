@@ -13,10 +13,10 @@ class RefreshTokenCliEndpoint extends AbstractCliEndpoint
 
     public function execute(): RequestResponse
     {
-        echo 'Refresh token: ';
-        $refreshToken = $this->readFromStdin();
-        echo 'Scope (comma-separated string): ';
-        $scope = $this->readFromStdin();
+        $this->getOutputWriter()->write('Refresh token: ');
+        $refreshToken = $this->getInputReader()->readFromStdin();
+        $this->getOutputWriter()->write('Scope (comma-separated string): ');
+        $scope = $this->getInputReader()->readFromStdin();
 
         return $this->getTwitchApi()->getOauthApi()->refreshToken($refreshToken, $scope);
     }

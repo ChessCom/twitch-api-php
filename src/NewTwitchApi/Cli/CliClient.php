@@ -14,6 +14,11 @@ use NewTwitchApi\Cli\CliEndpoints\GetUsersCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetUsersFollowsCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\ValidateTokenCliEndpoint;
+use NewTwitchApi\Cli\Exceptions\ExitCliException;
+use NewTwitchApi\Cli\IO\InputOutput;
+use NewTwitchApi\Cli\IO\InputReader;
+use NewTwitchApi\Cli\IO\OutputWriter;
+use NewTwitchApi\Cli\IO\Stdin;
 use NewTwitchApi\HelixGuzzleClient;
 use NewTwitchApi\NewTwitchApi;
 
@@ -36,15 +41,18 @@ class CliClient
 
         $helixGuzzleClient = new HelixGuzzleClient($clientId);
         $newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret);
-
+        $inputOutput = new InputOutput(
+            new InputReader(new Stdin()),
+            new OutputWriter()
+        );
         $this->endpoints = [
             new ExitCliEndpoint(),
-            new ValidateTokenCliEndpoint($newTwitchApi),
-            new RefreshTokenCliEndpoint($newTwitchApi),
-            new GetGamesCliEndpoint($newTwitchApi),
-            new GetStreamsCliEndpoint($newTwitchApi),
-            new GetUsersCliEndpoint($newTwitchApi),
-            new GetUsersFollowsCliEndpoint($newTwitchApi),
+            new ValidateTokenCliEndpoint($newTwitchApi, $inputOutput),
+            new RefreshTokenCliEndpoint($newTwitchApi, $inputOutput),
+            new GetGamesCliEndpoint($newTwitchApi, $inputOutput),
+            new GetStreamsCliEndpoint($newTwitchApi, $inputOutput),
+            new GetUsersCliEndpoint($newTwitchApi, $inputOutput),
+            new GetUsersFollowsCliEndpoint($newTwitchApi, $inputOutput),
         ];
     }
 
@@ -55,10 +63,12 @@ class CliClient
         while (true) {
             try {
                 $endpoint = $this->promptForEndpoint();
-                echo $endpoint->getName().PHP_EOL;
+                echo $endpoint->getName() . PHP_EOL;
                 $requestResponse = $endpoint->execute();
-                echo PHP_EOL.$requestResponse->getRequest()->getRequestTarget().PHP_EOL;
-                echo PHP_EOL.json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT).PHP_EOL;
+                echo PHP_EOL . $requestResponse->getRequest()->getRequestTarget() . PHP_EOL;
+                echo PHP_EOL . json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
+            } catch (ExitCliException $e) {
+                exit;
             } catch (Exception $e) {
                 echo $e->getMessage().PHP_EOL;
             }

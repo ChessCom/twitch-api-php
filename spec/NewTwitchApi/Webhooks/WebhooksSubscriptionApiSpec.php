@@ -3,10 +3,10 @@
 namespace spec\NewTwitchApi\Webhooks;
 
 use GuzzleHttp\Client;
-use NewTwitchApi\Webhooks\WebhooksApi;
+use NewTwitchApi\Webhooks\WebhooksSubscriptionApi;
 use PhpSpec\ObjectBehavior;
 
-class WebhooksApiSpec extends ObjectBehavior
+class WebhooksSubscriptionApiSpec extends ObjectBehavior
 {
     function let(Client $guzzleClient)
     {
@@ -15,7 +15,7 @@ class WebhooksApiSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(WebhooksApi::class);
+        $this->shouldHaveType(WebhooksSubscriptionApi::class);
     }
 
     function it_validates_valid_signature()

@@ -8,7 +8,7 @@ use NewTwitchApi\NewTwitchApi;
 use NewTwitchApi\Resources\GamesApi;
 use NewTwitchApi\Resources\StreamsApi;
 use NewTwitchApi\Resources\UsersApi;
-use NewTwitchApi\Webhooks\WebhooksApi;
+use NewTwitchApi\Webhooks\WebhooksSubscriptionApi;
 use PhpSpec\ObjectBehavior;
 
 class NewTwitchApiSpec extends ObjectBehavior
@@ -44,6 +44,6 @@ class NewTwitchApiSpec extends ObjectBehavior
 
     function it_should_provide_webhooks_api()
     {
-        $this->getWebhooksApi()->shouldBeAnInstanceOf(WebhooksApi::class);
+        $this->getWebhooksSubscriptionApi()->shouldBeAnInstanceOf(WebhooksSubscriptionApi::class);
     }
 }

@@ -7,7 +7,7 @@ namespace NewTwitchApi\Webhooks;
 use GuzzleHttp\Client;
 use NewTwitchApi\HelixGuzzleClient;
 
-class WebhooksApi
+class WebhooksSubscriptionApi
 {
     public const SUBSCRIBE = 'subscribe';
 

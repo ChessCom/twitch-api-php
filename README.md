@@ -30,7 +30,7 @@ or add the following dependency to your `composer.json` file and run `composer u
 
 Everything stems from the `NewTwitchApi` class. However, if you want to individual instantiate `UsersApi`, `OauthApi`, etc. you are free to do so.
 
-The API calls generally return a custom `RequestResponse` object. This object holds both the Guzzle `Request` and `Response`, with corresponding getters.
+The API calls generally return a custom `RequestResponse` object. This object holds both the Guzzle `Request` and `Response`, with corresponding getters. Usually, after a successful API call is made, you will get the `Response` from the `RequestResponse` object and work with that. Since you are getting the full `Response` object, you'll need to handle its contents, e.g. by decoding then into an object with `json_decode()`. This library does not assume this is what you want to do, so it does not do this for you automatically. This library simply acts as a middleman between your code and Twitch, providing you with the raw responses the Twitch API returns. 
 
 The indiviual API classes that can be called from `NewTwitchApi` correspond to the [New Twitch API documentation](https://dev.twitch.tv/docs/api/). `OauthApi` is for Oauth calls. `WebhooksApi` is for webhooks. The rest of the API classes are based on the resources listed [here](https://dev.twitch.tv/docs/api/reference/). The methods in the classes generally correspond to the endpoints for each resource. The naming convention was chosen to try and match the Twitch documentation. Each primary endpoint method (not convenience or helper methods) should have an `@link` annotation with a URL to that endpoint's specific documentation.
 

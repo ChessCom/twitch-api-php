@@ -31,7 +31,7 @@ class GetUserWithAccessTokenCliEndpointSpec extends ObjectBehavior
 
     function it_should_get_games_by_ids_and_names_with_email(NewTwitchApi $newTwitchApi, InputReader $inputReader, UsersApi $usersApi)
     {
-        $usersApi->getUsers([], [], true, 'access-token')->shouldBeCalled();
+        $usersApi->getUserByAccessToken('access-token', true)->shouldBeCalled();
         $newTwitchApi->getUsersApi()->willReturn($usersApi);
         $inputReader->readFromStdin()->willReturn('access-token', 'y');
 
@@ -40,7 +40,7 @@ class GetUserWithAccessTokenCliEndpointSpec extends ObjectBehavior
 
     function it_should_get_games_by_ids_and_names_without_email(NewTwitchApi $newTwitchApi, InputReader $inputReader, UsersApi $usersApi)
     {
-        $usersApi->getUsers([], [], false, 'access-token')->shouldBeCalled();
+        $usersApi->getUserByAccessToken('access-token', false)->shouldBeCalled();
         $newTwitchApi->getUsersApi()->willReturn($usersApi);
         $inputReader->readFromStdin()->willReturn('access-token', 'n');
 

@@ -18,11 +18,9 @@ class GetUserWithAccessTokenCliEndpoint extends AbstractCliEndpoint
         $this->getOutputWriter()->write('Include email address? (y/n) ');
         $includeEmail = $this->getInputReader()->readFromStdin();
 
-        return $this->getTwitchApi()->getUsersApi()->getUsers(
-            [],
-            [],
-            $includeEmail === 'y',
-            $accessToken
+        return $this->getTwitchApi()->getUsersApi()->getUserByAccessToken(
+            $accessToken,
+            $includeEmail === 'y'
         );
     }
 }

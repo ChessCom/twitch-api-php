@@ -23,4 +23,10 @@ class AuthGuzzleClientSpec extends ObjectBehavior
         $uri->getHost()->shouldBe('id.twitch.tv');
         $uri->getPath()->shouldBe('/oauth2/');
     }
+
+    function it_should_have_passed_in_config_params_instead_of_defaults()
+    {
+        $this->beConstructedWith(['base_uri' => 'https://different.url']);
+        $this->getConfig('base_uri')->getHost()->shouldBe('different.url');
+    }
 }

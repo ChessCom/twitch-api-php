@@ -12,12 +12,10 @@ class HelixGuzzleClient extends Client
 
     public function __construct(string $clientId, array $config = [])
     {
-        $config = array_merge($config, [
+        parent::__construct($config += [
             'base_uri' => self::BASE_URI,
             'timeout' => 30,
             'headers' => ['Client-ID' => $clientId, 'Content-Type' => 'application/json'],
         ]);
-
-        parent::__construct($config);
     }
 }

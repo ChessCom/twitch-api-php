@@ -36,4 +36,10 @@ class HelixGuzzleClientSpec extends ObjectBehavior
     {
         $this->getConfig('headers')->shouldHaveKeyWithValue('Content-Type', 'application/json');
     }
+
+    function it_should_have_passed_in_config_params_instead_of_defaults()
+    {
+        $this->beConstructedWith('client-id', ['base_uri' => 'https://different.url']);
+        $this->getConfig('base_uri')->getHost()->shouldBe('different.url');
+    }
 }

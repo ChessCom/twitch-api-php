@@ -12,10 +12,8 @@ class AuthGuzzleClient extends Client
 
     public function __construct(array $config = [])
     {
-        $config = array_merge($config, [
+        parent::__construct($config += [
             'base_uri' => self::BASE_URI,
         ]);
-
-        parent::__construct($config);
     }
 }

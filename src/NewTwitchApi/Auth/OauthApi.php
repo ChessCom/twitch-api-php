@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class OauthApi
 {
@@ -35,7 +35,7 @@ class OauthApi
         );
     }
 
-    public function getUserAccessToken($code, string $redirectUri, $state = null): RequestResponse
+    public function getUserAccessToken($code, string $redirectUri, $state = null): ResponseInterface
     {
         return $this->makeRequest(
             new Request('POST', 'token'),
@@ -52,7 +52,7 @@ class OauthApi
         );
     }
 
-    public function refreshToken(string $refeshToken, string $scope = ''): RequestResponse
+    public function refreshToken(string $refeshToken, string $scope = ''): ResponseInterface
     {
         $requestOptions = [
             'client_id' => $this->clientId,
@@ -72,7 +72,7 @@ class OauthApi
         );
     }
 
-    public function validateAccessToken(string $accessToken): RequestResponse
+    public function validateAccessToken(string $accessToken): ResponseInterface
     {
         return $this->makeRequest(
             new Request(
@@ -87,10 +87,10 @@ class OauthApi
 
     public function isValidAccessToken(string $accessToken): bool
     {
-        return $this->validateAccessToken($accessToken)->getResponse()->getStatusCode() === 200;
+        return $this->validateAccessToken($accessToken)->getStatusCode() === 200;
     }
 
-    public function getAppAccessToken(string $scope = ''): RequestResponse
+    public function getAppAccessToken(string $scope = ''): ResponseInterface
     {
         return $this->makeRequest(
             new Request('POST', 'token'),
@@ -105,15 +105,13 @@ class OauthApi
         );
     }
 
-    private function makeRequest(Request $request, array $options = []): RequestResponse
+    private function makeRequest(Request $request, array $options = []): ResponseInterface
     {
         try {
-            $response = $this->guzzleClient->send($request, $options);
+            return $this->guzzleClient->send($request, $options);
         } catch (GuzzleException $e) {
-            return new RequestResponse($e->getRequest(), $e->getResponse());
+            return $e->getResponse();
         }
-
-        return new RequestResponse($request, $response);
     }
 
     /**

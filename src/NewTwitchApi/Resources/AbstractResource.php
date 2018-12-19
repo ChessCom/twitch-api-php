@@ -7,7 +7,7 @@ namespace NewTwitchApi\Resources;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractResource
 {
@@ -18,7 +18,7 @@ abstract class AbstractResource
         $this->guzzleClient = $guzzleClient;
     }
 
-    protected function callApi(string $uriEndpoint, array $queryParamsMap = [], string $bearer = null): RequestResponse
+    protected function callApi(string $uriEndpoint, array $queryParamsMap = [], string $bearer = null): ResponseInterface
     {
         $request = new Request(
             'GET',
@@ -26,12 +26,10 @@ abstract class AbstractResource
             $bearer ? ['Authorization' => sprintf('Bearer %s', $bearer)] : []
         );
         try {
-            $response = $this->guzzleClient->send($request);
+            return $this->guzzleClient->send($request);
         } catch (GuzzleException $e) {
-            return new RequestResponse($e->getRequest(), $e->getResponse());
+            return $e->getResponse();
         }
-
-        return new RequestResponse($request, $response);
     }
 
     /**

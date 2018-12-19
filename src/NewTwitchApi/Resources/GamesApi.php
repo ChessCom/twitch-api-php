@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Resources;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class GamesApi extends AbstractResource
 {
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-games
      */
-    public function getGames(array $ids = [], array $names = []): RequestResponse
+    public function getGames(array $ids = [], array $names = []): ResponseInterface
     {
         $queryParamsMap = [];
         foreach ($ids as $id) {

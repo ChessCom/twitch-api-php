@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace NewTwitchApi\Resources;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class UsersApi extends AbstractResource
 {
-    public function getUserByAccessToken(string $accessToken, bool $includeEmail = false): RequestResponse
+    public function getUserByAccessToken(string $accessToken, bool $includeEmail = false): ResponseInterface
     {
         return $this->getUsers([], [], $includeEmail, $accessToken);
     }
 
-    public function getUserById(int $id, bool $includeEmail = false): RequestResponse
+    public function getUserById(int $id, bool $includeEmail = false): ResponseInterface
     {
         return $this->getUsers([$id], [], $includeEmail);
     }
 
-    public function getUserByUsername(string $username, bool $includeEmail = false): RequestResponse
+    public function getUserByUsername(string $username, bool $includeEmail = false): ResponseInterface
     {
         return $this->getUsers([], [$username], $includeEmail);
     }
@@ -26,7 +26,7 @@ class UsersApi extends AbstractResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users
      */
-    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false, string $bearer = null): RequestResponse
+    public function getUsers(array $ids = [], array $usernames = [], bool $includeEmail = false, string $bearer = null): ResponseInterface
     {
         $queryParamsMap = [];
         foreach ($ids as $id) {
@@ -45,7 +45,7 @@ class UsersApi extends AbstractResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-users-follows
      */
-    public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): RequestResponse
+    public function getUsersFollows(int $followerId = null, int $followedUserId = null, int $first = null, string $after = null): ResponseInterface
     {
         $queryParamsMap = [];
         if ($followerId) {

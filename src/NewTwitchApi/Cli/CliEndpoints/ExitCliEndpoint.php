@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\Cli\Exceptions\ExitCliException;
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class ExitCliEndpoint extends AbstractCliEndpoint
 {
@@ -18,7 +20,7 @@ class ExitCliEndpoint extends AbstractCliEndpoint
     }
 
     /** @throws ExitCliException */
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         throw new ExitCliException('Exit from CLI client requested.');
     }

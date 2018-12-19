@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class RefreshTokenCliEndpoint extends AbstractCliEndpoint
 {
@@ -11,7 +13,7 @@ class RefreshTokenCliEndpoint extends AbstractCliEndpoint
         return 'Refresh an Access Token';
     }
 
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         $this->getOutputWriter()->write('Refresh token: ');
         $refreshToken = $this->getInputReader()->readFromStdin();

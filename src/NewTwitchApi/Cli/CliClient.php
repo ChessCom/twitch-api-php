@@ -74,9 +74,9 @@ class CliClient
             try {
                 $endpoint = $this->promptForEndpoint();
                 echo $endpoint->getName() . PHP_EOL;
-                $requestResponse = $endpoint->execute();
+                $response = $endpoint->execute();
                 echo PHP_EOL . $this->getRequest()->getRequestTarget() . PHP_EOL;
-                echo PHP_EOL . json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
+                echo PHP_EOL . json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
             } catch (ExitCliException $e) {
                 exit;
             } catch (Exception $e) {

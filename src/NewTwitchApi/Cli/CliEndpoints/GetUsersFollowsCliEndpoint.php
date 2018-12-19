@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class GetUsersFollowsCliEndpoint extends AbstractCliEndpoint
 {
@@ -11,7 +13,7 @@ class GetUsersFollowsCliEndpoint extends AbstractCliEndpoint
         return 'Get Users Follows';
     }
 
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         $this->getOutputWriter()->write('Follower ID: ');
         $followerId = $this->getInputReader()->readIntFromStdin();

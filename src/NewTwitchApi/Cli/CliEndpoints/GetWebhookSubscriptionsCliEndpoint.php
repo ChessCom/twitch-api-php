@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class GetWebhookSubscriptionsCliEndpoint extends AbstractCliEndpoint
 {
@@ -11,7 +13,7 @@ class GetWebhookSubscriptionsCliEndpoint extends AbstractCliEndpoint
         return 'Get Webhook Subscriptions for User';
     }
 
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         $this->getOutputWriter()->write('Access Token: ');
         $accessToken = $this->getInputReader()->readFromStdin();

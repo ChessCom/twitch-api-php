@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace NewTwitchApi\Resources;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class StreamsApi extends AbstractResource
 {
-    public function getStreamForUserId(int $userId): RequestResponse
+    public function getStreamForUserId(int $userId): ResponseInterface
     {
         return $this->getStreams([$userId]);
     }
 
-    public function getStreamForUsername(string $username): RequestResponse
+    public function getStreamForUsername(string $username): ResponseInterface
     {
         return $this->getStreams([], [$username]);
     }
@@ -21,7 +21,7 @@ class StreamsApi extends AbstractResource
     /**
      * @link https://dev.twitch.tv/docs/api/reference/#get-streams
      */
-    public function getStreams(array $userIds = [], array $usernames = [], array $gameIds = [], array $communityIds = [], array $languages = [], string $first = null, string $before = null, string $after = null): RequestResponse
+    public function getStreams(array $userIds = [], array $usernames = [], array $gameIds = [], array $communityIds = [], array $languages = [], int $first = null, string $before = null, string $after = null): ResponseInterface
     {
         $queryParamsMap = [];
         foreach ($userIds as $id) {

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class GetGamesCliEndpoint extends AbstractCliEndpoint
 {
@@ -11,7 +13,7 @@ class GetGamesCliEndpoint extends AbstractCliEndpoint
         return 'Get Games';
     }
 
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         $this->getOutputWriter()->write('IDs (separated by commas): ');
         $ids = $this->getInputReader()->readCSVIntoArrayFromStdin();

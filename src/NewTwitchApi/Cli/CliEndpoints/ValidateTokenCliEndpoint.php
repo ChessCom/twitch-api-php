@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\RequestResponse;
+use Psr\Http\Message\ResponseInterface;
 
 class ValidateTokenCliEndpoint extends AbstractCliEndpoint
 {
@@ -11,7 +13,7 @@ class ValidateTokenCliEndpoint extends AbstractCliEndpoint
         return 'Validate an Access Token';
     }
 
-    public function execute(): RequestResponse
+    public function execute(): ResponseInterface
     {
         $this->getOutputWriter()->write('Access token: ');
         $accessToken = $this->getInputReader()->readFromStdin();

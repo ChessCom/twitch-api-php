@@ -14,14 +14,7 @@ class OauthApiSpec extends ObjectBehavior
         $this->beConstructedWith('client-id', 'client-secret', $guzzleClient);
     }
 
-    function it_should_get_auth_url()
-    {
-        $this->getAuthUrl('https://redirect.url')->shouldReturn(
-            'authorize?client_id=client-id&redirect_uri=https://redirect.url&response_type=code&scope='
-        );
-    }
-
-    function it_should_get_full_auth_url(Client $guzzleClient)
+    function it_should_get_auth_url(Client $guzzleClient)
     {
         $guzzleClient->getConfig('base_uri')->willReturn('https://id.twitch.tv/oauth2/');
         $this->getAuthUrl('https://redirect.url')->shouldReturn(
@@ -44,9 +37,7 @@ class OauthApiSpec extends ObjectBehavior
             'state' => null,
         ]])->willReturn($response);
 
-        $requestResponse = $this->getUserAccessToken('user-code-from-twitch', 'https://redirect.url');
-        $requestResponse->getRequest()->getMethod()->shouldBe('POST');
-        $requestResponse->getResponse()->shouldBe($response);
+        $this->getUserAccessToken('user-code-from-twitch', 'https://redirect.url')->shouldBe($response);
     }
 
     function it_should_get_refresh_token(Client $guzzleClient, Response $response)
@@ -62,9 +53,7 @@ class OauthApiSpec extends ObjectBehavior
             'refresh_token' => 'user-refresh-token',
         ]])->willReturn($response);
 
-        $requestResponse = $this->refreshToken('user-refresh-token');
-        $requestResponse->getRequest()->getMethod()->shouldBe('POST');
-        $requestResponse->getResponse()->shouldBe($response);
+        $this->refreshToken('user-refresh-token')->shouldBe($response);
     }
 
     function it_should_validate_access_token(Client $guzzleClient, Response $response)
@@ -78,9 +67,7 @@ class OauthApiSpec extends ObjectBehavior
         );
         $guzzleClient->send($request, [])->willReturn($response);
 
-        $requestResponse = $this->validateAccessToken('user-access-token');
-        $requestResponse->getRequest()->getMethod()->shouldBe('GET');
-        $requestResponse->getResponse()->shouldBe($response);
+        $this->validateAccessToken('user-access-token')->shouldBe($response);
     }
 
     function it_should_return_true_if_access_token_is_valid(Client $guzzleClient, Response $response)
@@ -126,8 +113,6 @@ class OauthApiSpec extends ObjectBehavior
             'scope' => '',
         ]])->willReturn($response);
 
-        $requestResponse = $this->getAppAccessToken();
-        $requestResponse->getRequest()->getMethod()->shouldBe('POST');
-        $requestResponse->getResponse()->shouldBe($response);
+        $this->getAppAccessToken()->shouldBe($response);
     }
 }

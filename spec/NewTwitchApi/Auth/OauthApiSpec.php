@@ -24,20 +24,9 @@ class OauthApiSpec extends ObjectBehavior
     function it_should_get_full_auth_url(Client $guzzleClient)
     {
         $guzzleClient->getConfig('base_uri')->willReturn('https://id.twitch.tv/oauth2/');
-        $this->getFullAuthUrl('https://redirect.url')->shouldReturn(
+        $this->getAuthUrl('https://redirect.url')->shouldReturn(
             'https://id.twitch.tv/oauth2/authorize?client_id=client-id&redirect_uri=https://redirect.url&response_type=code&scope='
         );
-    }
-
-    function it_should_authorize_user(Client $guzzleClient, Response $response)
-    {
-        $request = new Request('GET', 'authorize?client_id=client-id&redirect_uri=https://redirect.url&response_type=code&scope=');
-        $guzzleClient->send($request, [])->willReturn($response);
-
-        $requestResponse = $this->authorizeUser('https://redirect.url');
-        $requestResponse->getRequest()->getMethod()->shouldBe('GET');
-        $requestResponse->getRequest()->getUri()->getQuery()->shouldBe('client_id=client-id&redirect_uri=https://redirect.url&response_type=code&scope=');
-        $requestResponse->getResponse()->shouldBe($response);
     }
 
     function it_should_get_access_token(Client $guzzleClient, Response $response)

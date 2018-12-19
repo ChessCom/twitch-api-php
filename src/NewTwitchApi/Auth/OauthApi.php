@@ -26,42 +26,13 @@ class OauthApi
     /**
      * @return string A full authentication URL, including the Guzzle client's base URI.
      */
-    public function getFullAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
+    public function getAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
     {
         return sprintf(
             '%s%s',
             $this->guzzleClient->getConfig('base_uri'),
-            $this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state)
+            $this->getPartialAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state)
         );
-    }
-
-    /**
-     * @return string A partial authentication URL, excluding the Guzzle client's base URI.
-     */
-    public function getAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
-    {
-        $optionalParameters = '';
-        $optionalParameters .= $forceVerify ? '&force_verify=true' : '';
-        $optionalParameters .= $state ? sprintf('&state=%s', $state) : '';
-
-        return sprintf(
-            'authorize?client_id=%s&redirect_uri=%s&response_type=%s&scope=%s%s',
-            $this->clientId,
-            $redirectUri,
-            $responseType,
-            $scope,
-            $optionalParameters
-        );
-    }
-
-    public function authorizeUser(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): RequestResponse
-    {
-        $request = new Request(
-            'GET',
-            $this->getAuthUrl($redirectUri, $responseType, $scope, $forceVerify, $state)
-        );
-
-        return $this->makeRequest($request);
     }
 
     public function getUserAccessToken($code, string $redirectUri, $state = null): RequestResponse
@@ -143,5 +114,24 @@ class OauthApi
         }
 
         return new RequestResponse($request, $response);
+    }
+
+    /**
+     * @return string A partial authentication URL, excluding the Guzzle client's base URI.
+     */
+    private function getPartialAuthUrl(string $redirectUri, string $responseType = 'code', string $scope = '', bool $forceVerify = false, string $state = null): string
+    {
+        $optionalParameters = '';
+        $optionalParameters .= $forceVerify ? '&force_verify=true' : '';
+        $optionalParameters .= $state ? sprintf('&state=%s', $state) : '';
+
+        return sprintf(
+            'authorize?client_id=%s&redirect_uri=%s&response_type=%s&scope=%s%s',
+            $this->clientId,
+            $redirectUri,
+            $responseType,
+            $scope,
+            $optionalParameters
+        );
     }
 }

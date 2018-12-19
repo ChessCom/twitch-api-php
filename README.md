@@ -6,26 +6,6 @@ A New Twitch API (Helix) client for PHP. The code for the new API is all contain
 
 The New Twitch API client is still being developed and is currently incomplete. The endpoints that are implemented are usable, but not all endpoints have been implemented yet. If an endpoint you need is missing, incomplete, or not working correctly, please report it or fix it if you can and create a PR for it.
 
-## Requirements
-
-PHP 7.1 or higher is required.
-
-## Installation
-
-Either pull in the library via composer:
-
-```bash
-composer require nicklaw5/twitch-api-php
-
-```
-
-or add the following dependency to your `composer.json` file and run `composer update`:
-
-```json
-// TODO Update version to 2.0 when NewTwitchApi is available
-"nicklaw5/twitch-api-php": "~1.0"
-```
-
 ## Usage
 
 Everything stems from the `NewTwitchApi` class. However, if you want to individually instantiate `UsersApi`, `OauthApi`, etc. you are free to do so.
@@ -136,25 +116,6 @@ Choice: 0
 
 Quit
 $
-```
-
-## Tests
-
-### PHPUnit
-All [PHPUnit](https://phpunit.de/) unit tests can be run with the following command:
-
-```bash
-vendor/bin/phpunit
-```
-
-This will run tests for both the New API code as well as the existing Kraken API code.
-
-### PHPSpec
-
-[PHPSpec](http://www.phpspec.net) has been added, specifically for the New Twitch API code. Specs can be run with the following command:
-
-```bash
-vendor/bin/phpspec run
 ```
 
 ## Developer Tools

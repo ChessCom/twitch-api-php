@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace NewTwitchApi\Cli;
 
 use Exception;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use InvalidArgumentException;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
@@ -76,10 +78,12 @@ class CliClient
                 echo $endpoint->getName() . PHP_EOL;
                 $response = $endpoint->execute();
                 echo PHP_EOL . $this->getRequest()->getRequestTarget() . PHP_EOL;
-                echo PHP_EOL . json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
+                $this->printResponse($response);
+            } catch (ClientException $e) {
+                $this->printResponse($e->getResponse());
             } catch (ExitCliException $e) {
                 exit;
-            } catch (Exception $e) {
+            } catch (Exception | GuzzleException $e) {
                 echo $e->getMessage().PHP_EOL;
             }
         }
@@ -130,5 +134,13 @@ class CliClient
     public function setRequest(RequestInterface $request): void
     {
         $this->request = $request;
+    }
+
+    /**
+     * @param \Psr\Http\Message\ResponseInterface $response
+     */
+    private function printResponse(\Psr\Http\Message\ResponseInterface $response): void
+    {
+        echo PHP_EOL . json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
     }
 }

@@ -18,6 +18,9 @@ abstract class AbstractResource
         $this->guzzleClient = $guzzleClient;
     }
 
+    /**
+     * @throws GuzzleException
+     */
     protected function callApi(string $uriEndpoint, array $queryParamsMap = [], string $bearer = null): ResponseInterface
     {
         $request = new Request(
@@ -25,11 +28,8 @@ abstract class AbstractResource
             sprintf('%s%s', $uriEndpoint, $this->generateQueryParams($queryParamsMap)),
             $bearer ? ['Authorization' => sprintf('Bearer %s', $bearer)] : []
         );
-        try {
-            return $this->guzzleClient->send($request);
-        } catch (GuzzleException $e) {
-            return $e->getResponse();
-        }
+
+        return $this->guzzleClient->send($request);
     }
 
     /**

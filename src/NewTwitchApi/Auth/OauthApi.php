@@ -35,6 +35,9 @@ class OauthApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function getUserAccessToken($code, string $redirectUri, $state = null): ResponseInterface
     {
         return $this->makeRequest(
@@ -52,6 +55,9 @@ class OauthApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function refreshToken(string $refeshToken, string $scope = ''): ResponseInterface
     {
         $requestOptions = [
@@ -72,6 +78,9 @@ class OauthApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function validateAccessToken(string $accessToken): ResponseInterface
     {
         return $this->makeRequest(
@@ -85,11 +94,17 @@ class OauthApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function isValidAccessToken(string $accessToken): bool
     {
         return $this->validateAccessToken($accessToken)->getStatusCode() === 200;
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function getAppAccessToken(string $scope = ''): ResponseInterface
     {
         return $this->makeRequest(
@@ -105,13 +120,12 @@ class OauthApi
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     private function makeRequest(Request $request, array $options = []): ResponseInterface
     {
-        try {
-            return $this->guzzleClient->send($request, $options);
-        } catch (GuzzleException $e) {
-            return $e->getResponse();
-        }
+        return $this->guzzleClient->send($request, $options);
     }
 
     /**

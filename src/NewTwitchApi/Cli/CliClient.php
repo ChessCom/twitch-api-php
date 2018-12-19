@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace NewTwitchApi\Cli;
 
 use Exception;
+use GuzzleHttp\HandlerStack;
 use InvalidArgumentException;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
@@ -24,11 +25,14 @@ use NewTwitchApi\Cli\IO\OutputWriter;
 use NewTwitchApi\Cli\IO\Stdin;
 use NewTwitchApi\HelixGuzzleClient;
 use NewTwitchApi\NewTwitchApi;
+use Psr\Http\Message\RequestInterface;
 
 class CliClient
 {
     /** @var array */
     private $endpoints;
+
+    private $request;
 
     /**
      * @throws InvalidArgumentException
@@ -42,7 +46,7 @@ class CliClient
         $clientId = $argv[1];
         $clientSecret = $argv[2];
 
-        $helixGuzzleClient = new HelixGuzzleClient($clientId);
+        $helixGuzzleClient = $this->getGuzzleClient($clientId);
         $newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret);
         $inputOutput = new InputOutput(
             new InputReader(new Stdin()),
@@ -71,7 +75,7 @@ class CliClient
                 $endpoint = $this->promptForEndpoint();
                 echo $endpoint->getName() . PHP_EOL;
                 $requestResponse = $endpoint->execute();
-                echo PHP_EOL . $requestResponse->getRequest()->getRequestTarget() . PHP_EOL;
+                echo PHP_EOL . $this->getRequest()->getRequestTarget() . PHP_EOL;
                 echo PHP_EOL . json_encode(json_decode($requestResponse->getResponse()->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
             } catch (ExitCliException $e) {
                 exit;
@@ -98,5 +102,33 @@ class CliClient
         }
 
         return $this->endpoints[$choice];
+    }
+
+    private function getGuzzleClient(string $clientId): HelixGuzzleClient
+    {
+        $handlerStack = HandlerStack::create();
+        $handlerStack->push(
+            $this->createGuzzleRequestMiddleware()
+        );
+        return new HelixGuzzleClient($clientId, [
+            'handler' => $handlerStack,
+        ]);
+    }
+
+    private function createGuzzleRequestMiddleware(): callable
+    {
+        return \GuzzleHttp\Middleware::tap(function ($request) {
+            $this->setRequest($request);
+        });
+    }
+
+    private function getRequest(): RequestInterface
+    {
+        return $this->request;
+    }
+
+    public function setRequest(RequestInterface $request): void
+    {
+        $this->request = $request;
     }
 }

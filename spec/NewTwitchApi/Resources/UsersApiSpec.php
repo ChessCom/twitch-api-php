@@ -5,20 +5,14 @@ namespace spec\NewTwitchApi\Resources;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PhpSpec\ObjectBehavior;
 use NewTwitchApi\RequestResponse;
-use NewTwitchApi\Resources\UsersApi;
+use PhpSpec\ObjectBehavior;
 
 class UsersApiSpec extends ObjectBehavior
 {
     function let(Client $guzzleClient)
     {
         $this->beConstructedWith($guzzleClient);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(UsersApi::class);
     }
 
     function it_should_get_users_by_ids(Client $guzzleClient, Response $response)

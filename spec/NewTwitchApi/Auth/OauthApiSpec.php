@@ -5,7 +5,6 @@ namespace spec\NewTwitchApi\Auth;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use NewTwitchApi\Auth\OauthApi;
 use PhpSpec\ObjectBehavior;
 
 class OauthApiSpec extends ObjectBehavior
@@ -13,11 +12,6 @@ class OauthApiSpec extends ObjectBehavior
     function let(Client $guzzleClient)
     {
         $this->beConstructedWith('client-id', 'client-secret', $guzzleClient);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(OauthApi::class);
     }
 
     function it_should_get_auth_url()

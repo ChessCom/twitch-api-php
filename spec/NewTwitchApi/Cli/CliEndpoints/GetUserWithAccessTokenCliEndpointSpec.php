@@ -2,7 +2,6 @@
 
 namespace spec\NewTwitchApi\Cli\CliEndpoints;
 
-use NewTwitchApi\Cli\CliEndpoints\GetUserWithAccessTokenCliEndpoint;
 use NewTwitchApi\Cli\IO\InputOutput;
 use NewTwitchApi\Cli\IO\InputReader;
 use NewTwitchApi\Cli\IO\OutputWriter;
@@ -17,11 +16,6 @@ class GetUserWithAccessTokenCliEndpointSpec extends ObjectBehavior
         $inputOutput->getInputReader()->willReturn($inputReader);
         $inputOutput->getOutputWriter()->willReturn($outputWriter);
         $this->beConstructedWith($newTwitchApi, $inputOutput);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(GetUserWithAccessTokenCliEndpoint::class);
     }
 
     function it_should_have_correct_name()

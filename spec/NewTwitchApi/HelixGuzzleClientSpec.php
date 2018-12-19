@@ -3,7 +3,6 @@
 namespace spec\NewTwitchApi;
 
 use GuzzleHttp\Psr7\Uri;
-use NewTwitchApi\HelixGuzzleClient;
 use PhpSpec\ObjectBehavior;
 
 class HelixGuzzleClientSpec extends ObjectBehavior
@@ -11,11 +10,6 @@ class HelixGuzzleClientSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith('client-id');
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(HelixGuzzleClient::class);
     }
 
     function it_should_have_correct_base_uri()

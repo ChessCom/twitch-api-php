@@ -4,7 +4,6 @@ namespace spec\NewTwitchApi;
 
 use GuzzleHttp\Client;
 use NewTwitchApi\Auth\OauthApi;
-use NewTwitchApi\NewTwitchApi;
 use NewTwitchApi\Resources\GamesApi;
 use NewTwitchApi\Resources\StreamsApi;
 use NewTwitchApi\Resources\UsersApi;
@@ -17,10 +16,6 @@ class NewTwitchApiSpec extends ObjectBehavior
     function let(Client $guzzleClient)
     {
         $this->beConstructedWith($guzzleClient, 'client-id', 'client-secret');
-    }
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(NewTwitchApi::class);
     }
 
     function it_should_provide_oauth_api()

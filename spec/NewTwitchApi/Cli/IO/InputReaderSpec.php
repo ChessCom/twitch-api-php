@@ -2,7 +2,6 @@
 
 namespace spec\NewTwitchApi\Cli\IO;
 
-use NewTwitchApi\Cli\IO\InputReader;
 use NewTwitchApi\Cli\IO\Stdin;
 use PhpSpec\ObjectBehavior;
 
@@ -11,11 +10,6 @@ class InputReaderSpec extends ObjectBehavior
     function let(Stdin $stdin)
     {
         $this->beConstructedWith($stdin);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(InputReader::class);
     }
 
     function it_should_return_a_trimmed_string(Stdin $stdin)

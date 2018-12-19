@@ -3,7 +3,6 @@
 namespace spec\NewTwitchApi\Cli\CliEndpoints;
 
 use NewTwitchApi\Auth\OauthApi;
-use NewTwitchApi\Cli\CliEndpoints\RefreshTokenCliEndpoint;
 use NewTwitchApi\Cli\IO\InputOutput;
 use NewTwitchApi\Cli\IO\InputReader;
 use NewTwitchApi\Cli\IO\OutputWriter;
@@ -17,11 +16,6 @@ class RefreshTokenCliEndpointSpec extends ObjectBehavior
         $inputOutput->getInputReader()->willReturn($inputReader);
         $inputOutput->getOutputWriter()->willReturn($outputWriter);
         $this->beConstructedWith($newTwitchApi, $inputOutput);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(RefreshTokenCliEndpoint::class);
     }
 
     function it_should_have_correct_name()

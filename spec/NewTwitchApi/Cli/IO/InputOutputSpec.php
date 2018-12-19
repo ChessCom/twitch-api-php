@@ -2,7 +2,6 @@
 
 namespace spec\NewTwitchApi\Cli\IO;
 
-use NewTwitchApi\Cli\IO\InputOutput;
 use NewTwitchApi\Cli\IO\InputReader;
 use NewTwitchApi\Cli\IO\OutputWriter;
 use PhpSpec\ObjectBehavior;
@@ -12,11 +11,6 @@ class InputOutputSpec extends ObjectBehavior
     function let(InputReader $inputReader, OutputWriter $outputWriter)
     {
         $this->beConstructedWith($inputReader, $outputWriter);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(InputOutput::class);
     }
 
     function it_should_return_input_reader(InputReader $inputReader)

@@ -21,9 +21,9 @@ class NewTwitchApi
     private $webhooksApi;
     private $webhooksSubscriptionApi;
 
-    public function __construct(Client $helixGuzzleClient, string $clientId, string $clientSecret)
+    public function __construct(Client $helixGuzzleClient, string $clientId, string $clientSecret, Client $authGuzzleClient = null)
     {
-        $this->oauthApi = new OauthApi($clientId, $clientSecret);
+        $this->oauthApi = new OauthApi($clientId, $clientSecret, $authGuzzleClient);
         $this->gamesApi = new GamesApi($helixGuzzleClient);
         $this->streamsApi = new StreamsApi($helixGuzzleClient);
         $this->usersApi = new UsersApi($helixGuzzleClient);

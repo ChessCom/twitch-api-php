@@ -8,7 +8,9 @@ use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use InvalidArgumentException;
+use NewTwitchApi\Auth\AuthGuzzleClient;
 use NewTwitchApi\Cli\CliEndpoints\CliEndpointInterface;
 use NewTwitchApi\Cli\CliEndpoints\ExitCliEndpoint;
 use NewTwitchApi\Cli\CliEndpoints\GetAppAccessTokenCliEndpoint;
@@ -28,6 +30,7 @@ use NewTwitchApi\Cli\IO\Stdin;
 use NewTwitchApi\HelixGuzzleClient;
 use NewTwitchApi\NewTwitchApi;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class CliClient
 {
@@ -48,8 +51,9 @@ class CliClient
         $clientId = $argv[1];
         $clientSecret = $argv[2];
 
-        $helixGuzzleClient = $this->getGuzzleClient($clientId);
-        $newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret);
+        $helixGuzzleClient = $this->getHelixGuzzleClient($clientId);
+        $authGuzzleclient = $this->getAuthGuzzleClient();
+        $newTwitchApi = new NewTwitchApi($helixGuzzleClient, $clientId, $clientSecret, $authGuzzleclient);
         $inputOutput = new InputOutput(
             new InputReader(new Stdin()),
             new OutputWriter()
@@ -80,6 +84,7 @@ class CliClient
                 echo PHP_EOL . $this->getRequest()->getRequestTarget() . PHP_EOL;
                 $this->printResponse($response);
             } catch (ClientException $e) {
+                echo PHP_EOL . $this->getRequest()->getRequestTarget() . PHP_EOL;
                 $this->printResponse($e->getResponse());
             } catch (ExitCliException $e) {
                 exit;
@@ -108,20 +113,33 @@ class CliClient
         return $this->endpoints[$choice];
     }
 
-    private function getGuzzleClient(string $clientId): HelixGuzzleClient
+    private function getHelixGuzzleClient(string $clientId): HelixGuzzleClient
+    {
+        return new HelixGuzzleClient($clientId, [
+            'handler' => $this->createRequestHandlerStack(),
+        ]);
+    }
+
+    private function getAuthGuzzleClient(): AuthGuzzleClient
+    {
+        return new AuthGuzzleClient([
+            'handler' => $this->createRequestHandlerStack(),
+        ]);
+    }
+
+    private function createRequestHandlerStack(): HandlerStack
     {
         $handlerStack = HandlerStack::create();
         $handlerStack->push(
             $this->createGuzzleRequestMiddleware()
         );
-        return new HelixGuzzleClient($clientId, [
-            'handler' => $handlerStack,
-        ]);
+
+        return $handlerStack;
     }
 
     private function createGuzzleRequestMiddleware(): callable
     {
-        return \GuzzleHttp\Middleware::tap(function ($request) {
+        return Middleware::tap(function ($request) {
             $this->setRequest($request);
         });
     }
@@ -137,9 +155,9 @@ class CliClient
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param ResponseInterface $response
      */
-    private function printResponse(\Psr\Http\Message\ResponseInterface $response): void
+    private function printResponse(ResponseInterface $response): void
     {
         echo PHP_EOL . json_encode(json_decode($response->getBody()->getContents()), JSON_PRETTY_PRINT) . PHP_EOL;
     }
